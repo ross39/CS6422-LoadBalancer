@@ -1,5 +1,6 @@
 # CS6422-LoadBalancer
 A load balancer for CS6422
+
 This load balancer can distribute client requests to different servers.
 
 To simulate the environment. 
