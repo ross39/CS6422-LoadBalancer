@@ -10,7 +10,7 @@ To simulate the environment.
 
 # Design
 ## logic workflow 
-I draw the basic logic workflow. The rectangulars in red make up main process. Each lane title is the class name. The final specific classes and their respective methods, attributes need to be further considered.
+I draw the basic logic workflow. The rectangulars in red make up main process. Each lane title is the class name. The final specific classes and their respective methods, attributes need further consideration.
 
 
 <img src="./pic/design_v1.png" alt="design_v1" />
