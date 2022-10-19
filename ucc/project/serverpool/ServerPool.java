@@ -1,4 +1,4 @@
-package ucc.project.serverpool;
+package org.example.serverpool;
 
 public class ServerPool {
 

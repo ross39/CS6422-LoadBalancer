@@ -1,4 +1,4 @@
-package ucc.project.loadbalancer;
+package org.example.loadbalancer;
 
 import static org.junit.jupiter.api.Assertions.*;
 
