@@ -1,14 +1,25 @@
 package ucc.project.loadbalancer;
 
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class LoadBalancerTest {
 
-    @org.junit.jupiter.api.BeforeEach
-    void setUp() {
-    }
+        @Test
+        public void shouldGetServerList(){
+            LoadBalancer lb = new LoadBalancer();
+            lb.getServerList();
+        }
 
-    @org.junit.jupiter.api.AfterEach
-    void tearDown() {
-    }
+        @Test
+        public void shouldPickServer(){
+
+        }
+
+        @Test
+        public void shouldGetServerAddress(){
+
+        }
+
 }
