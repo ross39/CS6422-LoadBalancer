@@ -1,5 +1,6 @@
+package ucc.project.server;
+
 import java.io.File;
-import java.io.IOException;
 
 /**
  * A server class that first initialize its ip address from IPGenerator, then register itself to serverpool.

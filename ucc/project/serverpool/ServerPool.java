@@ -23,7 +23,7 @@ public class ServerPool {
 
     public void updateServerList(){
         //Take new server, and add it to the serverList
-        //ServerPool.serverList.addLast(Server);
+        //ServerPool.serverList.addLast(ucc.project.server.Server);
 
     }
 
