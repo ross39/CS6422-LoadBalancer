@@ -5,4 +5,4 @@ CS6422-LoadBalancer.iml
 .idea/misc.xml
 .idea/workspace.xml
 .idea/workspace.xml
-.idea
+.idea/*
