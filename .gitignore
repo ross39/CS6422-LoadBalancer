@@ -3,3 +3,5 @@ CS6422-LoadBalancer.iml
 .idea/modules.xml
 .idea/misc.xml
 .idea/workspace.xml
+*.class
+out
