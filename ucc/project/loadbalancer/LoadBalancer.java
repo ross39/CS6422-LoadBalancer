@@ -1,4 +1,4 @@
-package org.example.loadbalancer;
+package ucc.project.loadbalancer;
 
 public class LoadBalancer {
 

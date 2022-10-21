@@ -1,4 +1,4 @@
-package org.example.serverpool;
+package ucc.project.serverpool;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

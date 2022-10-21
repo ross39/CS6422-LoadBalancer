@@ -1,4 +1,4 @@
-package org.example.client;
+package ucc.project.client;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -27,7 +27,7 @@ public class Client {
             bufferedReader.close();
         }
         catch (Exception e) {
-
+            System.out.println("Error");
         }
     }
 
