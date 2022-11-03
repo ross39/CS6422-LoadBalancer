@@ -13,65 +13,65 @@ public class Algorithm {
     public final static int RoundRobinNext = 2;
     public final static int WeightDependentNext = 3;
 
-    private ArrayList<ServerDetails> serverDetailsArrayList = new ArrayList<>();
+    private ArrayList<Server> serverList = new ArrayList<>();
 
     private int current_index_roundrobin = 0;
 
-    private int current_index_weightdepend = serverDetailsArrayList.size() - 1;
+    private int current_index_weightdepend = serverList.size() - 1;
 
     private void RenewCurrentIndex() {
         current_index_roundrobin = 0;
-        current_index_weightdepend = serverDetailsArrayList.size() - 1;
+        current_index_weightdepend = serverList.size() - 1;
     }
 
-    public void setServerDetailsArrayList(ArrayList<ServerDetails> serverDetailsArrayList) {
-        this.serverDetailsArrayList = serverDetailsArrayList;
+    public void setServerList(ArrayList<Server> serverList) {
+        this.serverList = serverList;
         RenewCurrentIndex();
     }
 
-    public ServerDetails RandomSelectNext() {
+    public Server RandomSelectNext() {
 
-        int list_number = serverDetailsArrayList.size();
+        int list_number = serverList.size();
         Random random = new Random();
         int random_index = random.nextInt(list_number);
-        ServerDetails serverDetails = serverDetailsArrayList.get(random_index);
-        return serverDetails;
+        Server server = serverList.get(random_index);
+        return server;
 
     }
 
-    public ServerDetails RoundRobinNext() {
+    public Server RoundRobinNext() {
 
-        ServerDetails serverDetails;
+        Server server;
 
-        if (current_index_roundrobin < serverDetailsArrayList.size()) {
-            serverDetails = serverDetailsArrayList.get(current_index_roundrobin);
+        if (current_index_roundrobin < serverList.size()) {
+            server = serverList.get(current_index_roundrobin);
             current_index_roundrobin++;
         } else {
             current_index_roundrobin = 0;
-            serverDetails = serverDetailsArrayList.get(current_index_roundrobin);
+            server = serverList.get(current_index_roundrobin);
             current_index_roundrobin++;
         }
 
-        return serverDetails;
+        return server;
 
 
     }
 
-    public ServerDetails WeightDependentNext() {
+    public Server WeightDependentNext() {
 
-        ServerDetails serverDetails;
-        serverDetailsArrayList.sort(null);
+        Server server;
+        serverList.sort(null);
 
         if (current_index_weightdepend >= 0) {
-            serverDetails = serverDetailsArrayList.get(current_index_weightdepend);
+            server = serverList.get(current_index_weightdepend);
             current_index_weightdepend--;
         } else {
-            current_index_weightdepend = serverDetailsArrayList.size() - 1;
-            serverDetails = serverDetailsArrayList.get(current_index_weightdepend);
+            current_index_weightdepend = serverList.size() - 1;
+            server = serverList.get(current_index_weightdepend);
             current_index_weightdepend--;
         }
 
-        return serverDetails;
+        return server;
 
 
     }
