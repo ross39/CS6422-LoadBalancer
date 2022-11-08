@@ -1,7 +1,7 @@
-package main.java; /**
- * @author : meiqi huang
- * @created : 2022-11-1
- **/
+package main.java; 
+/*
+ * Authors Cheuk Wei Lin, Meiqi Huang,Ross Heaney, Ruyun Sun, Yiqiu Wang
+ */
 
 import java.util.ArrayList;
 

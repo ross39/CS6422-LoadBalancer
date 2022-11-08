@@ -1,8 +1,4 @@
 package main.java;
-/**
- * @author: meiqi huang
- * @created: 2022-11-1
- */
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -24,9 +20,18 @@ public class Algorithm {
         current_index_weightdepend = serverList.size() - 1;
     }
 
+    /*techically we don't need this as ArrayList is a mutable conatiner class
+     * We could simply call getServerList and mutate the ArrayList. Leave for now
+     * but no harm to look at this for when refactoring for final product 
+     */
     public void setServerList(ArrayList<Server> serverList) {
         this.serverList = serverList;
         RenewCurrentIndex();
+    }
+
+    //for test purposes
+    public ArrayList<Server> getServerList(){
+        return serverList;
     }
 
     public Server RandomSelectNext() {

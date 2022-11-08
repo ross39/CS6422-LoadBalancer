@@ -1,8 +1,5 @@
 package main.java;
-/**
- * @author: meiqi huang
- * @date: 2022-11-1
- */
+
 
 import java.util.ArrayList;
 

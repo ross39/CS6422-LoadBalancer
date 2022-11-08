@@ -1,12 +1,10 @@
 package main.java;
 
 import java.io.File;
-
-/**
- * A server class that first initialize its ip address from IPGenerator, then register itself to serverpool.
- * finally start listening.
- * @author: Meiqi Huang
+/*
+ * Authors Cheuk Wei Lin, Meiqi Huang,Ross Heaney, Ruyun Sun, Yiqiu Wang
  */
+
 public class Server  implements Comparable{
     /**
      * initialize the ip adrress and default weight once start.

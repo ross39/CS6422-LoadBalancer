@@ -1,8 +1,8 @@
 package main.java;
-/**
- * @author : meiqi huang
- * @created : 2022-11-1
- **/
+/*
+ * Authors Cheuk Wei Lin, Meiqi Huang,Ross Heaney, Ruyun Sun, Yiqiu Wang
+ */
+
 public class ServerDetails implements Comparable {
     int weight;
     //This will be a file corresponding to an ipaddress in the final build
