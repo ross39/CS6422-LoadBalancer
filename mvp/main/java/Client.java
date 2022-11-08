@@ -1,9 +1,7 @@
 package main.java;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.InputStreamReader;
-import java.util.Scanner;
 
 
 public class Client {
@@ -16,20 +14,19 @@ public class Client {
 
         try {
             // BufferedReader to read text from an input stream
-            BufferedReader bufferedReader = new BufferedReader(new FileReader("CS6422-LoadBalancer/mvp/clientrequests.txt"));
+           BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 
-            // Prints a single line
-            String line = bufferedReader.readLine();
-            while (line != null) {
-                System.out.println(line);
-                line = bufferedReader.readLine();
-            }
+           // While loop to read each line of the file. request - each line is a different client request
+           String request;
+           while ((request = input.readLine()) != null) {
+            System.out.println("Client request: " + request);
+           }
 
-            // Closes the bufferedReader
-             bufferedReader.close();
+           // Closes input
+           input.close();
         }
         catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
