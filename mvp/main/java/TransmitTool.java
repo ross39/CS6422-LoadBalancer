@@ -13,6 +13,19 @@ public class TransmitTool {
     String json;
     int id;
 
+    public boolean authMessage() {
+
+        boolean isPass = false;
+
+
+        /*
+            auth token before processing
+        */
+
+
+        return isPass;
+    }
+
     public void processMessage(Request Req) {
 
         String [] newclientreq = Req.getClientReqStr().split("\\s+");
