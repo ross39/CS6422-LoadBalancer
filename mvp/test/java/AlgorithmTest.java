@@ -6,8 +6,7 @@ package test.java;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
@@ -59,19 +58,26 @@ public class AlgorithmTest {
        testListExpected.add(new Server(5, "ip7"));
 
        algo.setServerList(testListExpected);
-       algo.RoundRobinNext();
-       assertThat( algo.RoundRobinNext(), testListExpected.get(0));
-
-
-
-
+       
+       //I expect RoundRobinNext() to return testListExpected[0]
+       
+       assertEquals(algo.RoundRobinNext(),testListExpected.get(0));
 
 
     }
 
     @Test
     void testWeightDependentNext() {
-      //
+      //Test weighted round robin 
+      
+      ArrayList<Server> testListExpected = new ArrayList<>();
+      testListExpected.add(new Server(1, "ip2"));
+      testListExpected.add(new Server(2, "ip4"));
+      testListExpected.add(new Server(3, "ip6"));
+      testListExpected.add(new Server(5, "ip7"));
+      algo.setServerList(testListExpected); 
+
+      assertEquals(algo.WeightDependentNext(),testListExpected.get(3));
     }
 
 
