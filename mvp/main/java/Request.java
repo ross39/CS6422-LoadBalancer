@@ -6,10 +6,13 @@ public class Request {
     private String serveraddress;
     private String clientreqstr;
 
-    public Request(int id, String serveraddress, String clientreqstr) {
+    private String token;
+
+    public Request(int id, String serveraddress, String clientreqstr, String token) {
         this.id = id;
         this.serveraddress = serveraddress;
         this.clientreqstr = clientreqstr;
+        this.token = token;
     }
 
     public void setId() {
@@ -34,6 +37,14 @@ public class Request {
 
     public String getClientReqStr() {
         return clientreqstr;
+    }
+
+    public void setToken() {
+        this.token = token;
+    }
+
+    public String getToken() {
+        return token;
     }
 
 }
