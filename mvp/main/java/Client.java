@@ -3,8 +3,9 @@ package main.java;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-
 public class Client {
+
+    private static String request;
 
     public static void main(String[] args) {
        readFile();
@@ -13,16 +14,15 @@ public class Client {
     public static void readFile() {
 
         try {
-            // BufferedReader to read text from an input stream
+           /* BufferedReader to read text from an input stream */
            BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 
-           // While loop to read each line of the file. request - each line is a different client request
-           String request;
+           /* While loop to read each line of the file. request - each line is a different client request */ 
            while ((request = input.readLine()) != null) {
             System.out.println("Client request: " + request);
            }
 
-           // Closes input
+           /* Closes input */
            input.close();
         }
         catch (Exception e) {
@@ -30,8 +30,8 @@ public class Client {
         }
     }
 
-    public void sendClientRequest(){
-        // Sends the client request
-
+    public static String getClientRequest(){
+        /* Sends the client request to the load balancer */
+        return request;
     }
 }
