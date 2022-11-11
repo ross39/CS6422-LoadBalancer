@@ -14,7 +14,7 @@ public class TransmitTool {
     int id;
     boolean pass;
 
-    private static final long EXPIRE_TIME = 120 * 60 * 1000;//默认15分钟
+    private static final long EXPIRE_TIME = 120 * 60 * 1000;
     private static final String TOKEN_SECRET = "dsGUYSFef78dhf";
 
     public static String createToken(int clientid, String clientpw) {
