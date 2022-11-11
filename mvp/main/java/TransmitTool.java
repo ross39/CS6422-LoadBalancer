@@ -15,6 +15,7 @@ public class TransmitTool {
 
     String json;
     int id;
+    boolean pass;
 
     public boolean authMessage(String token) {
 
@@ -46,24 +47,26 @@ public class TransmitTool {
             this.json = json;
         }
         else {
+            this.pass = false;
             System.out.println("Authorization failed.");
         }
     }
 
     public void sendToServer() {
+        if (pass == true) {
+            String filename = this.id + ".json";
+            File file = new File(filename);
 
-        String filename = this.id + ".json";
-        File file = new File(filename);
+            try {
+                PrintWriter pw = new PrintWriter(file);
+                pw.println(this.json);
+                pw.close();
+            } catch (IOException e) {
+                System.out.println("Error occurred.");
+            }
 
-        try {
-            PrintWriter pw = new PrintWriter(file);
-            pw.println(this.json);
-            pw.close();
-        } catch (IOException e) {
-            System.out.println("Error occurred.");
+            System.out.println("File generated.");
         }
-
-        System.out.println("File generated.");
     }
 
 }
