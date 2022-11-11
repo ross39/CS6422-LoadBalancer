@@ -1,24 +1,71 @@
 package main.java;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.*;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.auth0.jwt.interfaces.JWTVerifier;
 
 public class TransmitTool {
 
     String json;
     int id;
     boolean pass;
+
+    private static final long EXPIRE_TIME = 120 * 60 * 1000; // 120 mins
+    private static final String TOKEN_SECRET = "dsGUYSFef78dhf";
+
+    // create token after verifying user credentials
+    public static String createToken(int clientid, String clientpw) {
+
+        /*
+            verify user credentials here
+        */
+
+        try {
+
+            Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
+
+            Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
+
+            Map<String, Object> header = new HashMap<>(2);
+            header.put("Type", "Jwt");
+            header.put("alg", "HS256");
+
+            return JWT.create()
+                    .withHeader(header)
+                    .withClaim("clientId", clientid)
+                    .withExpiresAt(date)
+                    .sign(algorithm);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public boolean authMessage(String token) {
 
         boolean isPass = false;
 
-        /*
-            verify token here
-        */
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
+            JWTVerifier verifier = JWT.require(algorithm).build();
+            DecodedJWT jwt = verifier.verify(token);
 
-        return isPass;
+            /*
+            verify if the user id match here
+            */
+
+            if (jwt != null) {
+                isPass = true;
+                return isPass;
+            } else {
+                return isPass;
+            }
+        } catch (Exception e) {
+            return isPass;
+        }
     }
 
     public void processMessage(Request Req) {
