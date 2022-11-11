@@ -2,25 +2,25 @@ package main.java;
 
 public class Request {
 
-    private int id;
+    private int clientid;
     private String serveraddress;
     private String clientreqstr;
 
     private String token;
 
-    public Request(int id, String serveraddress, String clientreqstr, String token) {
-        this.id = id;
+    public Request(int clientid, String serveraddress, String clientreqstr, String token) {
+        this.clientid = clientid;
         this.serveraddress = serveraddress;
         this.clientreqstr = clientreqstr;
         this.token = token;
     }
 
-    public void setId() {
-        this.id = id;
+    public void setClientId() {
+        this.clientid = clientid;
     }
 
-    public int getId() {
-        return id;
+    public int getClientId() {
+        return clientid;
     }
 
     public void setServerAddress() {
