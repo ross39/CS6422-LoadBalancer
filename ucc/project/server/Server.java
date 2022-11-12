@@ -2,6 +2,8 @@ package ucc.project.server;
 
 import java.io.File;
 
+import ucc.project.ipgenerator.IpGenerator;
+
 /**
  * A server class that first initialize its ip address from IPGenerator, then register itself to serverpool.
  * finally start listening.
@@ -44,7 +46,7 @@ public class Server {
      * @return
      */
     private String getFakeIpAddress() {
-        return "server1.txt";
+        return IpGenerator.getIP();
     }
 
     /**
