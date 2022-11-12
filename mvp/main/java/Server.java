@@ -1,15 +1,13 @@
-package ucc.project.server;
+package main.java;
 
 import java.io.File;
-
-import ucc.project.ipgenerator.IpGenerator;
 
 /**
  * A server class that first initialize its ip address from IPGenerator, then register itself to serverpool.
  * finally start listening.
  * @author: Meiqi Huang
  */
-public class Server {
+public class Server  implements Comparable{
     /**
      * initialize the ip adrress and default weight once start.
      * then register itself to serverpool
@@ -19,6 +17,13 @@ public class Server {
         this.weight=1;
         register();
     }
+
+    public Server(int weight,String ip) {
+        this.ip = ip;
+        this.weight = weight;
+        register();
+    }
+
 
     /**
      * initialize the ip adrress and specify the weight of server once start
@@ -53,8 +58,8 @@ public class Server {
      * register server itself to the serverpool
      */
     private void register(){
-//       ServerPool serverpool=new ServerPool();
-//       serverpool.listenForServer();
+        ServerPool serverPool = ServerPool.getServerPool();
+        serverPool.add_server(this);
     }
 
     /**
@@ -96,6 +101,20 @@ public class Server {
 
     int weight;
 
+    @Override
+    public int compareTo(Object o) {
+
+        if (o == null)
+            throw new NullPointerException("cannot compare the null object");
+
+        Server server = (Server) o;
+        if (server.getWeight() > this.weight)
+            return -1;
+        else if (server.getWeight() < this.weight)
+            return 1;
+
+        return 0;
+    }
     /**
      * test a server
      * @param args

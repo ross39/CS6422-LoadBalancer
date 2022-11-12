@@ -1,4 +1,4 @@
-package ucc.project.ipgenerator;
+package main.java;
 import java.io.File;
 
 /**
@@ -15,11 +15,11 @@ public class IpGenerator {
      */
     public static String getIP(){
         Integer i = 1;
-        String path = "ucc/project/out/server" + i.toString() + ".txt";
+        String path = "mvp/out/server" + i.toString() + ".txt";
         File f = new File(path);
         while (f.exists()){
             i++;
-            path = "ucc/project/out/server" + i.toString() + ".txt";
+            path = "mvp/out/server" + i.toString() + ".txt";
             f = new File(path);
         }
         return path;
