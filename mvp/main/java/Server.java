@@ -51,7 +51,7 @@ public class Server  implements Comparable{
      * @return
      */
     private String getFakeIpAddress() {
-        return "server1.txt";
+        return IpGenerator.getIP();
     }
 
     /**
