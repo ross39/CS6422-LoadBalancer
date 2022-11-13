@@ -11,20 +11,18 @@ import org.junit.jupiter.api.Test;
 
 public class ClientTest {
 
+    // Test one line of code
     @Test
-    public static void testReadFile() throws IOException {
+    public void testReadFile() throws IOException {
 
         String test = "Tom";
-
         String request;
         // BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        BufferedReader input = new BufferedReader(new FileReader("mvp/test/java/clientrequests.txt"));
-        while ((request = input.readLine()) != null) {
-            System.out.println(request);
-            input.close();
-        }
-
+        String filename="test/java/clientrequests.txt";
+        BufferedReader input = new BufferedReader(new FileReader(filename));
+        request = input.readLine();
         assertEquals(test, request);
+        input.close();
     }
     
 }
