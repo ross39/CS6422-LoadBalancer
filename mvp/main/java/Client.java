@@ -1,26 +1,36 @@
 package main.java;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Client {
     
     private static String request;
 
-    public static void main(String[] args) {
-       readFile();
+    public static List<String> actualResult;
+
+    public static void main() {
+        String path = "main/java/resource/multipleclientrequests.txt";
+        readFile(path);
     }
 
-    public static void readFile() {
+    public static void readFile(String filepath) {
 
         try {
-           /* BufferedReader to read text from an input stream */
-           BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 
-           /* While loop to read each line of the file. request - each line is a different client request */ 
+            InputStream file = new FileInputStream(new File(filepath));
+
+            BufferedReader input = new BufferedReader(new InputStreamReader(file));
+
+            // for test
+            actualResult = input.lines().collect(Collectors.toList());
+
+           /* While loop to read each line of the file. request - each line is a different client request */
            while ((request = input.readLine()) != null) {
             System.out.println("Client request: " + request);
            }
+
 
            /* Closes input */
            input.close();
