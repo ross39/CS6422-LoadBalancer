@@ -1,9 +1,6 @@
 package test.java;
 
-import main.java.Request;
-import main.java.TransmitTool;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class TransmitToolTest {
