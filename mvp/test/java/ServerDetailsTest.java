@@ -37,20 +37,14 @@ public class ServerDetailsTest{
 
      //We have overidden the compareTo so lets test it!
      @Test
-     void testCompareTo(){
+     void testCompareToThrowsException(){
         sd = new ServerDetails(4, "ip3");
         //Test that it throws an exception if given null
         try{
             sd.compareTo(null);
             fail("This method failed to throw an exception");
         } catch(NullPointerException e){
-
         }
-
-        //Test that it returns -1 
-        
-        //Test that it returns 1
-
      }
 
 

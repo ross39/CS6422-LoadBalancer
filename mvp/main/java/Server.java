@@ -5,7 +5,7 @@ import java.io.File;
  * Authors Cheuk Wei Lin, Meiqi Huang,Ross Heaney, Ruyun Sun, Yiqiu Wang
  */
 
-public class Server  implements Comparable{
+public class Server implements Comparable{
     /**
      * initialize the ip adrress and default weight once start.
      * then register itself to serverpool

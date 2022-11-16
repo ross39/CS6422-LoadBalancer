@@ -28,7 +28,6 @@ public class AlgorithmTest {
 
     @Test
     void testSetServerList(){
-        //This was wrong as I was trying to compare two arrays. Yes they contain the same stuff but their object ID's are different
        /* ArrayList<Server> testListActual = new ArrayList<>();
         testListActual.add(new Server(1, "ip1"));
         testListActual.add(new Server(1, "ip2"));
