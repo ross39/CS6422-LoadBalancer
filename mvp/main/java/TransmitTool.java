@@ -13,15 +13,14 @@ public class TransmitTool {
     int id;
     boolean pass;
 
-    private static final long EXPIRE_TIME = 120 * 60 * 1000; // 120 mins
+    private static final long EXPIRE_TIME = 120 * 60 * 1000;
     private static final String TOKEN_SECRET = "dsGUYSFef78dhf";
 
-    // create token after verifying user credentials
     public static String createToken(int clientid, String clientpw) {
 
         /*
-            verify user credentials here
-        */
+         * verify user credentials here
+         * */
 
         try {
 
@@ -47,17 +46,18 @@ public class TransmitTool {
     public boolean authMessage(String token) {
 
         boolean isPass = false;
-
         try {
             Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
             JWTVerifier verifier = JWT.require(algorithm).build();
             DecodedJWT jwt = verifier.verify(token);
 
+            // String clientId = jwt.getClaim("clientId").asString();
+
             /*
             verify if the user id match here
             */
 
-            if (jwt != null) {
+            if(jwt != null) {
                 isPass = true;
                 return isPass;
             } else {
@@ -75,6 +75,7 @@ public class TransmitTool {
             String clientaddress = newclientreq[0];
             String clientreqloc = newclientreq[1];
 
+
             String json = "{\n" +
                     "   \"clientid\": " + Req.getClientId() + ",\n" +
                     "   \"serveraddress\": \"" + Req.getServerAddress() + "\",\n" +
@@ -82,11 +83,17 @@ public class TransmitTool {
                     "   \"clientreqloc\": \"" + clientreqloc + "\"\n" +
                     "}";
 
+
             System.out.println(json + "\n");
 
             this.id = Req.getClientId();
             this.json = json;
-            this.pass = true;
+            if(json != null) {
+                this.pass = true;
+                System.out.println("Authorization success and ready for sending.");
+            } else {
+                this.pass = false;
+            }
         }
         else {
             this.pass = false;
@@ -108,6 +115,8 @@ public class TransmitTool {
             }
 
             System.out.println("File generated.");
+        } else {
+            System.out.println("Error occurred.");
         }
     }
 
