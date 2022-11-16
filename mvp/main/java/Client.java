@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 public class Client {
-
+    
     private static String request;
 
     public static void main(String[] args) {
@@ -30,8 +30,7 @@ public class Client {
         }
     }
 
-    public static String getClientRequest(){
+    public void sendClientRequest(){
         /* Sends the client request to the load balancer */
-        return request;
     }
 }

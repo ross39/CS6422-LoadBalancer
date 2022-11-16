@@ -3,26 +3,33 @@ package test.java;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-
 import org.junit.jupiter.api.Test;
+import main.java.Client;
 
 public class ClientTest {
 
-    // Test one line of code
+    // Test for one line in a file
     @Test
     public void testReadFile() throws IOException {
 
         String test = "Tom";
         String request;
-        // BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        String filename="test/java/clientrequests.txt";
-        BufferedReader input = new BufferedReader(new FileReader(filename));
+
+        InputStream file = getClass().getResourceAsStream("clientrequest.txt");
+        BufferedReader input = new BufferedReader(new InputStreamReader(file));
         request = input.readLine();
+
         assertEquals(test, request);
+        
         input.close();
     }
+
+    // Test for multiple lines in a file
+    @Test
+    public void testReadFileMultipleLines() throws IOException {    
     
+    }
 }
