@@ -10,34 +10,58 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.util.ArrayList;
+
+/*
+ * Test class for Server.java
+ * test
+ */
 public class ServerTest{
-    /*
-     * Test class for Server.java 
-     * test
-     */
 
-
-   
-
+    //Test that it starts listening
     @Test
      void testStartListen(){
-        //Test that it starts listening
+
+        Server server = new Server(3, "ip1");
+
+        // once start listening, server would create an empty file according to ip address
+        server.startListen();
+
+        File file = new File("ip1");
+
+        boolean exists = file.exists();
+
+        assertEquals(true, exists);
     
     }
 
     @Test
      void testGetIpAddress(){
-        //Test that it returns the correct ip address using reflection
+
+        //Test that it returns the correct ip address using constructor method.
         Server server = new Server(3, "ip1");
+
         assertEquals("ip1", server.getIp());
 
     }
 
     @Test
      void testRegister(){
+
         //check that server has been added to serverpool
-        /* Server server = new Server(3, "ip1");
-        assertEquals(server, ServerPool.getServerPool().getPool().get(0)); */
+        Server server = new Server(3, "ip1");
+
+        //get the server from serverpool
+        ServerPool serverPool = ServerPool.getServerPool();
+
+        ArrayList<Server> pool = serverPool.getPool();
+
+        //check if the pool contains server
+        boolean contains = pool.contains(server);
+
+        assertEquals(true, contains);
+
     }
 
 }

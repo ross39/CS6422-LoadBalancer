@@ -12,8 +12,6 @@ public class ServerPool {
     //Create a arraylist of server pools
     private ArrayList<Server> pool = new ArrayList<>();
 
-
-
     //singleton mode
     private ServerPool() {
     }
@@ -27,7 +25,6 @@ public class ServerPool {
         this.pool = pool;
 
     }
-
 
     // for thread safe
     public synchronized void add_server(Server server) {

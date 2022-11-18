@@ -27,8 +27,8 @@ public class ServerDetails implements Comparable {
         if (o == null)
             throw new NullPointerException("cannot compare the null object");
 
-        //This is called upcasting I believe 
         ServerDetails serverDetails = (ServerDetails) o;
+
         if (serverDetails.getWeight() > this.weight)
             return -1;
         else if (serverDetails.getWeight() < this.weight)

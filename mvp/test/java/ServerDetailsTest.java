@@ -11,18 +11,18 @@ import org.junit.jupiter.api.Test;
 import main.java.ServerDetails;
 
 public class ServerDetailsTest{
+
     /*
      * Test class for ServerDetails.java
      */
-
      private ServerDetails sd;
-
-
 
     //Sanity check 
      @Test
      void testGetWeight(){
+
         sd = new ServerDetails(2, "ip2");
+
         assertEquals(sd.getWeight(), 2);
 
 
@@ -31,19 +31,28 @@ public class ServerDetailsTest{
      //Sanity check
      @Test
      void testGetAddress(){
+
         sd = new ServerDetails(4, "ip3");
+
         assertEquals(sd.getAddress(), "ip3");
+
      }
 
      //We have overidden the compareTo so lets test it!
      @Test
      void testCompareToThrowsException(){
+
         sd = new ServerDetails(4, "ip3");
+
         //Test that it throws an exception if given null
         try{
+
             sd.compareTo(null);
+
             fail("This method failed to throw an exception");
+
         } catch(NullPointerException e){
+
         }
      }
 

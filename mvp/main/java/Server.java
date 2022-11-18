@@ -1,51 +1,71 @@
 package main.java;
 
 import java.io.File;
+
 /*
  * Authors Cheuk Wei Lin, Meiqi Huang,Ross Heaney, Ruyun Sun, Yiqiu Wang
  */
 
-public class Server implements Comparable{
+public class Server implements Comparable {
+
     /**
      * initialize the ip adrress and default weight once start.
      * then register itself to serverpool
      */
-    Server(){
-        this.ip=getIPAddress();
-        this.weight=1;
+    Server() {
+
+        this.ip = getIPAddress();
+
+        this.weight = 1;
+
+        // register itself to serverpool once created new object
         register();
+
     }
 
-    public Server(int weight,String ip) {
+    public Server(int weight, String ip) {
+
         this.ip = ip;
+
         this.weight = weight;
+
+        // register itself to serverpool once created new object
         register();
+
     }
 
 
     /**
      * initialize the ip adrress and specify the weight of server once start
      * then register itself to serverpool
+     *
      * @param weight
      */
-    Server(int weight){
+    Server(int weight) {
 
-        this.ip=getIPAddress();
-        this.weight=weight;
+        this.ip = getIPAddress();
+
+        this.weight = weight;
+
+        // register itself to serverpool once created new object
         register();
     }
 
     /**
      * get the ip address from IPGenerator
+     *
      * @return a avaliable ip address
      */
     private String getIPAddress() {
-        String ip=getFakeIpAddress();
+
+        String ip = getFakeIpAddress();
+
         return ip;
     }
 
     /**
      * mock a fake ip address
+     *
      * @return
      */
     private String getFakeIpAddress() {
@@ -55,8 +75,10 @@ public class Server implements Comparable{
     /**
      * register server itself to the serverpool
      */
-    private void register(){
+    private void register() {
+
         ServerPool serverPool = ServerPool.getServerPool();
+
         serverPool.add_server(this);
     }
 
@@ -64,17 +86,22 @@ public class Server implements Comparable{
      * server start listening
      * create an empty file using the ip address
      */
-    public void startListen(){
-        try{
-            File file=new File(this.ip);
-            if (file.createNewFile()){
+    public void startListen() {
+
+        try {
+
+            File file = new File(this.ip);
+
+            if (file.createNewFile()) {
+
+            } else {
 
             }
-            else{
 
-            }
         } catch (Exception e) {
+
             e.printStackTrace();
+
         }
 
     }
@@ -106,19 +133,23 @@ public class Server implements Comparable{
             throw new NullPointerException("cannot compare the null object");
 
         Server server = (Server) o;
+
         if (server.getWeight() > this.weight)
             return -1;
+
         else if (server.getWeight() < this.weight)
             return 1;
 
         return 0;
     }
+
     /**
      * test a server
+     *
      * @param args
      */
     public static void main(String[] args) {
-        Server server=new Server();
+        Server server = new Server();
         server.startListen();
     }
 }

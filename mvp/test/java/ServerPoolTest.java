@@ -12,11 +12,11 @@ import main.java.ServerPool;
 import org.junit.jupiter.api.Test;
 
 public class ServerPoolTest{
+
     /*
     * Test class for ServerPool.java     
     */
 
-    //private ServerPool sp = new ServerPool();
     private ServerPool sp = ServerPool.getServerPool();
 
     @Test
@@ -37,7 +37,8 @@ public class ServerPoolTest{
     public void testAddServer(){
         //Test that it adds a server to the pool
         Server s = new Server(2, "ip3");
-        sp.add_server(s);
+        // it would automatically register to pool inside server's constructor method
+//        sp.add_server(s);
         assertEquals(s, sp.getPool().get(0));
     }
 
