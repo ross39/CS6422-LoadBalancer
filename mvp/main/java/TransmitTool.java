@@ -2,62 +2,40 @@ package main.java;
 
 import java.io.*;
 import java.util.*;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import com.auth0.jwt.interfaces.JWTVerifier;
 
 public class TransmitTool {
 
-    String json;
-    int id;
-    boolean pass;
-
-    private static final long EXPIRE_TIME = 120 * 60 * 1000;
-    private static final String TOKEN_SECRET = "dsGUYSFef78dhf";
+    static String[] verList = new String[500]; // store tokens for each client
+    static ArrayList<String> reqList = new ArrayList<String>(); // store request form client
 
     public static String createToken(int clientid, String clientpw) {
 
         /*
-         * verify user credentials here
-         * */
+            verify client credentials here
+        */
 
-        try {
+        UUID uuid = UUID.randomUUID();
+        String postfix = uuid.toString();
+        String str1 = clientid + "," + postfix;
 
-            Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
+        verList[clientid] = postfix;
+        String token = Base64.getEncoder().encodeToString(str1.getBytes());
 
-            Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
+        return token;
 
-            Map<String, Object> header = new HashMap<>(2);
-            header.put("Type", "Jwt");
-            header.put("alg", "HS256");
-
-            return JWT.create()
-                    .withHeader(header)
-                    .withClaim("clientId", clientid)
-                    .withExpiresAt(date)
-                    .sign(algorithm);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     public boolean authMessage(String token) {
 
         boolean isPass = false;
+
+        byte[] tokenBytes = Base64.getDecoder().decode(token);
+        String str1 = new String(tokenBytes);
+
         try {
-            Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
-            JWTVerifier verifier = JWT.require(algorithm).build();
-            DecodedJWT jwt = verifier.verify(token);
-
-            // String clientId = jwt.getClaim("clientId").asString();
-
-            /*
-            verify if the user id match here
-            */
-
-            if(jwt != null) {
+            String[] str2 = str1.split(",");
+            int clientid = Integer.parseInt(str2[0]);
+            if (verList[clientid].equals(str2[1])) {
                 isPass = true;
                 return isPass;
             } else {
@@ -66,6 +44,7 @@ public class TransmitTool {
         } catch (Exception e) {
             return isPass;
         }
+
     }
 
     public void processMessage(Request Req) {
@@ -86,37 +65,39 @@ public class TransmitTool {
 
             System.out.println(json + "\n");
 
-            this.id = Req.getClientId();
-            this.json = json;
             if(json != null) {
-                this.pass = true;
-                System.out.println("Authorization success and ready for sending.");
+                reqList.add(json);
+                System.out.println("Authorization success and ready for sending.\n");
             } else {
-                this.pass = false;
+                System.out.println("Error during processing message.\n");
             }
         }
         else {
-            this.pass = false;
-            System.out.println("Authorization failed.");
+            System.out.println("Authorization failed.\n");
         }
     }
 
     public void sendToServer() {
-        if (pass == true) {
-            String filename = this.id + ".json";
+
+        for (int i = 0; i < reqList.size(); i++) {
+
+            String jsonCache = reqList.get(i);
+            String getId = jsonCache.substring(jsonCache.indexOf(":"), jsonCache.indexOf(","));
+            String[] getId2 = getId.split("\\s+");
+
+            String filename = getId2[1] + ".json";
             File file = new File(filename);
 
             try {
                 PrintWriter pw = new PrintWriter(file);
-                pw.println(this.json);
+                pw.println(jsonCache);
                 pw.close();
             } catch (IOException e) {
-                System.out.println("Error occurred.");
+                System.out.println("File generator: error occurred.\n");
             }
 
-            System.out.println("File generated.");
-        } else {
-            System.out.println("Error occurred.");
+            System.out.println("File generated for Client ID: " + getId2[1] + ".");
+
         }
     }
 
