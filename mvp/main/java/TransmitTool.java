@@ -49,7 +49,12 @@ public class TransmitTool {
 
     public void processMessage(Request Req) {
 
-        if(authMessage(Req.getToken()) == true) {
+        boolean tempStatus = true; // remove auth clients for Prototype 1, always true
+
+         //if(authMessage(Req.getToken()) == true) {
+
+        if(tempStatus == true) {
+
             String[] newclientreq = Req.getClientReqStr().split("\\s+");
             String clientaddress = newclientreq[0];
             String clientreqloc = newclientreq[1];
@@ -99,6 +104,9 @@ public class TransmitTool {
             System.out.println("File generated for Client ID: " + getId2[1] + ".");
 
         }
+
+        reqList.removeAll(reqList);
+
     }
 
 }
