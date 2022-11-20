@@ -14,7 +14,6 @@ class TransmitToolTest {
 
     TransmitTool transmitTool = new TransmitTool();
 
-
     void prepareFileEnvironment(){
 
         // create server file
@@ -57,7 +56,6 @@ class TransmitToolTest {
 
 
     }
-
 
     void prepareSocket(){
 
@@ -102,9 +100,7 @@ class TransmitToolTest {
         assertEquals(true, new File("Server2.txt").length() > 0);
 
         assertEquals(true, new File("Server3.txt").length() > 0);
-
-
-
+        
     }
 
 }
