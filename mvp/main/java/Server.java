@@ -69,7 +69,7 @@ public class Server implements Comparable {
      * @return
      */
     private String getFakeIpAddress() {
-        return IpGenerator.getIP();
+        return IpGenerator.getInstance().getIP();
     }
 
     /**

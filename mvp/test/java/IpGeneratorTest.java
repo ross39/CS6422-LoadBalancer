@@ -7,18 +7,40 @@ import org.junit.jupiter.api.Test;
 import main.java.IpGenerator;
 import main.java.Server;
 
+import java.io.File;
+
 public class IpGeneratorTest {
 
     @Test
     void initializationTest(){
-        String address1 = IpGenerator.getIP();
-        assertEquals(address1, "mvp/out/server1.txt");
+
+        IpGenerator instance = IpGenerator.getInstance();
+
+        String address1 = instance.getIP();
+
+        File file = new File(address1);
+
+        boolean exists = file.exists();
+
+        // ensure return a available file path
+        assertEquals(false, exists);
+
     }
 
     @Test
     void checkFileAddress(){
-        Server server1 = new Server('1',"mvp/out/server2.txt");
+
+        Server server1 = new Server('3', IpGenerator.getInstance().getIP());
+
+        server1.startListen();
+
         String ipAddress = server1.getIp();
-        assertEquals(ipAddress, "mvp/out/server2.txt");
+
+        File file = new File(ipAddress);
+
+        boolean exists = file.exists();
+
+        //ensure server has created the file with given path
+        assertEquals(true, exists);
     }
 }
