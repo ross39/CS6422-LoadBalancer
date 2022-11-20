@@ -13,11 +13,6 @@ public class Client {
 
     public static List<String> actualResult;
 
-    public static void main() {
-        String path = "main/java/resource/multipleclientrequests.txt";
-        readFile(path);
-    }
-
     public static void readFile(String filepath) {
 
         try {
@@ -29,14 +24,23 @@ public class Client {
             // for test
             actualResult = input.lines().collect(Collectors.toList());
 
-           /* While loop to read each line of the file. request - each line is a different client request */
-           while ((request = input.readLine()) != null) {
-            System.out.println("Client request: " + request);
-           }
+            /* Closes input */
+            input.close();
 
+//            alternative
+//            InputStream file2 = new FileInputStream(new File(filepath));
+//
+//            BufferedReader input2 = new BufferedReader(new InputStreamReader(file2));
+//
+//           /* While loop to read each line of the file. request - each line is a different client request */
+//           while ((request = input2.readLine()) != null) {
 
-           /* Closes input */
-           input.close();
+//            System.out.println("Client request: " + request);
+
+//           }
+//
+//           input2.close();
+
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -45,5 +49,13 @@ public class Client {
 
     public void sendClientRequest(){
         /* Sends the client request to the load balancer */
+    }
+
+    public static void main(String[] args) {
+
+        String path = "main/java/resource/multipleclientrequests.txt";
+
+        readFile(path);
+
     }
 }
