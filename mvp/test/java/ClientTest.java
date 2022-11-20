@@ -22,10 +22,15 @@ public class ClientTest {
      public void testReadFile() throws IOException {
  
          String expectedResult = "Tom";
+
          String actualResult;
- 
+
+         // root start from file current folder which is /test/java/
+         // alternative path  /test/java/resource/multipleclientrequests.txt
          InputStream file = getClass().getResourceAsStream("resource/clientrequest.txt");
+
          BufferedReader input = new BufferedReader(new InputStreamReader(file));
+
          actualResult = input.readLine();
  
          assertEquals(expectedResult, actualResult);
@@ -38,9 +43,13 @@ public class ClientTest {
      public void testReadFileMultipleLines() throws IOException {    
          
          List<String> expectedResult = Arrays.asList("Tom", "Sam", "Tim", "May");
-         
+
          // BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+
+         // root start from file current folder which is /test/java/
+         // alternative path  /test/java/resource/multipleclientrequests.txt
          InputStream file = getClass().getResourceAsStream("resource/multipleclientrequests.txt");
+
          BufferedReader input = new BufferedReader(new InputStreamReader(file));
  
          List<String> actualResult = input.lines().collect(Collectors.toList());
@@ -48,15 +57,24 @@ public class ClientTest {
          System.out.println(actualResult);
          
          assertEquals(expectedResult, actualResult);
+
          input.close();
  
      }
  
      @Test
      void testClient(){
+
          List<String> expectedResult = Arrays.asList("Tom", "Sam", "Tim", "May");
+
+         //root start from
+         // if your path is incompatible with current environment
+         // right click the file -> copy path
+         // copy <the path from contect root> of the file
          Client.readFile("resource/multipleclientrequests.txt");
+
          assertEquals(expectedResult, Client.actualResult);
+
      }
  }
  
