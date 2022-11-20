@@ -3,6 +3,7 @@ package main.java;
 import java.util.ArrayList;
 
 public class LoadBalancer {
+
     // defalut algorithm choice
     private int algorithm_choice = Algorithm.WeightDependentNext;
 
