@@ -12,7 +12,7 @@ public class IpGenerator {
 
     private int i = 1;
 
-    private String filePath = "out/";
+    private String filePath = "main/java/resource/server";
 
     private String fileNamePrefix = "server" ;
 
