@@ -52,7 +52,7 @@ public class ClientTest {
     @Test
     void testClient(){
         List<String> expectedResult = Arrays.asList("Tom", "Sam", "Tim", "May");
-        Client.readFile("main/java/resource/multipleclientrequests.txt");
+        Client.readFile("resource/multipleclientrequests.txt");
         assertEquals(expectedResult, Client.actualResult);
     }
 }
