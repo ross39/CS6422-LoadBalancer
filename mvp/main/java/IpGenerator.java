@@ -12,12 +12,20 @@ public class IpGenerator {
 
     private int i = 1;
 
-    private String filePath = "main/java/resources/";
+    private String filePath = "main/java/resource";
 
     private String fileNamePrefix = "server" ;
 
     private String fileNameSuffix = ".txt";
 
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
 
     private static IpGenerator ipGenerator = new IpGenerator();
 

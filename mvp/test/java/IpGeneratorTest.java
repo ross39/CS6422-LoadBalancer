@@ -30,6 +30,11 @@ public class IpGeneratorTest {
     @Test
     void checkFileAddress(){
 
+        // if your File path is incompatible with current working environment
+        // Please set File path to ""
+        // by default file path is main/java/resources
+        IpGenerator.getInstance().setFilePath("");
+
         Server server1 = new Server('3', IpGenerator.getInstance().getIP());
 
         server1.startListen();
