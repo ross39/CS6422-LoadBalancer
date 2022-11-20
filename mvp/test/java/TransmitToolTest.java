@@ -1,41 +1,110 @@
 package test.java;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-
-import main.java.Request;
+import main.java.Socket;
 import main.java.TransmitTool;
-
+import org.junit.jupiter.api.Test;
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TransmitToolTest {
+
+    TransmitTool transmitTool = new TransmitTool();
+
+
+    void prepareFileEnvironment(){
+
+        // create server file
+        for (int i = 1; i < 4; i++){
+
+            File file = new File("Server" + i + ".txt");
+
+            if (file.exists()){
+
+                file.delete();
+
+            }
+
+            try {
+
+                file.createNewFile();
+
+                }
+            catch (IOException exception) {
+
+                exception.printStackTrace();
+
+                }
+
+        }
+
+        // create client file
+        for (int i = 1; i < 4; i++){
+
+            File file = new File("Client" + i + ".txt");
+
+            if (file.exists()){
+
+                file.delete();
+
+            }
+
+        }
+
+
+
+    }
+
+
+    void prepareSocket(){
+
+        Socket s1 = new Socket("client1.txt","Server1.txt","Tom");
+
+        Socket s2 = new Socket("client2.txt","Server2.txt","Marry");
+
+        Socket s3 = new Socket("client3.txt","Server3.txt","Jack");
+
+        List<Socket> socketList = new ArrayList<>();
+
+        socketList.add(s1);
+
+        socketList.add(s2);
+
+        socketList.add(s3);
+
+        transmitTool.setSockets(socketList);
+    }
 
     @Test
     void generateNewFile() {
 
-        TransmitTool transmitTool = new TransmitTool();
+        prepareFileEnvironment();
 
-        String token = transmitTool.createToken(2, "Abc123456");
-        String token2 = transmitTool.createToken(3, "Abc123456");
-        String token3 = transmitTool.createToken(10, "Abc123456");
+        prepareSocket();
 
-        Request R1 = new Request(2,"10.0.0.1", "10.0.0.2 Batch1/Stream1", token);
-        Request R2 = new Request(3,"10.0.0.1", "10.0.0.20 Batch2/Stream6", token2);
-        Request R3 = new Request(10,"10.0.0.1", "10.0.0.50 Batch1/Stream9", token3);
+        assertEquals(0, new File("Server1.txt").length());
 
-        transmitTool.processMessage(R1);
-        transmitTool.processMessage(R2);
-        transmitTool.processMessage(R3);
+        assertEquals(0, new File("Server2.txt").length());
+
+        assertEquals(0, new File("Server3.txt").length());
+
+        assertEquals(false, transmitTool.getSockets().isEmpty());
 
         transmitTool.sendToServer();
 
-        File f1 = new File("2.json");
-        File f2 = new File("3.json");
-        File f3 = new File("10.json");
+        assertEquals(true, transmitTool.getSockets().isEmpty());
 
-        assertEquals(true, f1.exists());
-        assertEquals(true, f2.exists());
-        assertEquals(true, f3.exists());
+        assertEquals(true, new File("Server1.txt").length() > 0);
+
+        assertEquals(true, new File("Server2.txt").length() > 0);
+
+        assertEquals(true, new File("Server3.txt").length() > 0);
+
+
 
     }
+
 }
