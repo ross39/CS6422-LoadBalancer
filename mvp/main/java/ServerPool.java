@@ -1,7 +1,7 @@
-package main.java; /**
- * @author : meiqi huang
- * @created : 2022-11-1
- **/
+package main.java; 
+/*
+ * Authors Cheuk Wei Lin, Meiqi Huang,Ross Heaney, Ruyun Sun, Yiqiu Wang
+ */
 
 import java.util.ArrayList;
 
@@ -11,8 +11,6 @@ public class ServerPool {
 
     //Create a arraylist of server pools
     private ArrayList<Server> pool = new ArrayList<>();
-
-
 
     //singleton mode
     private ServerPool() {
@@ -27,7 +25,6 @@ public class ServerPool {
         this.pool = pool;
 
     }
-
 
     // for thread safe
     public synchronized void add_server(Server server) {
