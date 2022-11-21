@@ -5,6 +5,7 @@ public class Socket {
     private String clientip;
     private String serverip;
     private String message;
+    private String clientinfo;
 
     public String getClientip() {
         return clientip;
@@ -34,5 +35,20 @@ public class Socket {
         this.clientip = clientip;
         this.serverip = serverip;
         this.message = message;
+    }
+    public Socket(String clientinfo, Server server) {
+
+        this.clientinfo = clientinfo;
+
+        this.serverip = server.getIp();
+
+    }
+
+    public String getClientinfo() {
+        return clientinfo;
+    }
+
+    public void setClientinfo(String clientinfo) {
+        this.clientinfo = clientinfo;
     }
 }

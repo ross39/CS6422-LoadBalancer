@@ -70,7 +70,7 @@ public class ClientTest {
          //root start from
          // if your path is incompatible with current environment
          // right click the file -> copy path
-         // copy <the path from contect root> of the file
+         // copy <the path from content root> of the file
          Client.readFile("resource/multipleclientrequests.txt");
 
          assertEquals(expectedResult, Client.actualResult);

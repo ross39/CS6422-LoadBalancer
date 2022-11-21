@@ -21,6 +21,8 @@ public class Server implements Comparable {
         // register itself to serverpool once created new object
         register();
 
+        startListen();
+
     }
 
     public Server(int weight, String ip) {
@@ -32,6 +34,8 @@ public class Server implements Comparable {
         // register itself to serverpool once created new object
         register();
 
+        startListen();
+
     }
 
 
@@ -41,7 +45,7 @@ public class Server implements Comparable {
      *
      * @param weight
      */
-    Server(int weight) {
+    public Server(int weight) {
 
         this.ip = getIPAddress();
 
@@ -49,6 +53,8 @@ public class Server implements Comparable {
 
         // register itself to serverpool once created new object
         register();
+
+        startListen();
     }
 
     /**
@@ -58,9 +64,8 @@ public class Server implements Comparable {
      */
     private String getIPAddress() {
 
-        String ip = getFakeIpAddress();
+        return IpGenerator.getInstance().getIP();
 
-        return ip;
     }
 
     /**
@@ -69,7 +74,9 @@ public class Server implements Comparable {
      * @return
      */
     private String getFakeIpAddress() {
-        return IpGenerator.getInstance().getIP();
+
+        return "server1.txt";
+
     }
 
     /**
@@ -107,7 +114,9 @@ public class Server implements Comparable {
     }
 
     public String getIp() {
+
         return ip;
+
     }
 
     public void setIp(String ip) {
@@ -150,6 +159,5 @@ public class Server implements Comparable {
      */
     public static void main(String[] args) {
         Server server = new Server();
-        server.startListen();
     }
 }

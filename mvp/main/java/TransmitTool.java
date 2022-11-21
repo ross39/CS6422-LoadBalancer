@@ -29,15 +29,32 @@ public class TransmitTool {
 
             String serverip = sockets.get(i).getServerip();
 
+            String clientinfo = sockets.get(i).getClientinfo();
+
             File file = new File(serverip);
 
             try {
 
-                PrintWriter pw = new PrintWriter(file);
+                FileOutputStream fileOutputStream = new FileOutputStream(file, true);
 
-                pw.println(clientip+" : "+message);
+                if (clientinfo.isEmpty()){
 
-                pw.close();
+                    String s = clientip + " : " + message+"\n";
+
+                    fileOutputStream.write(s.getBytes());
+
+
+                }else{
+
+                    String s = clientinfo + "\n";
+
+                    fileOutputStream.write(s.getBytes());
+
+                }
+
+
+                fileOutputStream.close();
+
 
             } catch (IOException e) {
 

@@ -1,93 +1,69 @@
 package test.java;
 
-import main.java.Socket;
-import main.java.TransmitTool;
+import main.java.*;
 import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static main.java.Client.PATH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TransmitToolTest {
 
     TransmitTool transmitTool = new TransmitTool();
 
+    Server server1;
+
+    Server server2;
+
+    List<String> clientinfo = new ArrayList<>();
+
     void prepareFileEnvironment(){
 
-        // create server file
-        for (int i = 1; i < 4; i++){
+            // create server file
 
-            File file = new File("Server" + i + ".txt");
+             server1 = new Server(1);
 
-            if (file.exists()){
+             server2 = new Server(3);
 
-                file.delete();
+             LoadBalancer.getInstance().setServer_list(ServerPool.getServerPool().getPool());
 
-            }
+             Client.readFile("main/java/resource/clientinfo.txt");
 
-            try {
-
-                file.createNewFile();
-
-                }
-            catch (IOException exception) {
-
-                exception.printStackTrace();
-
-                }
-
-        }
-
-        // create client file
-        for (int i = 1; i < 4; i++){
-
-            File file = new File("Client" + i + ".txt");
-
-            if (file.exists()){
-
-                file.delete();
-
-            }
-
-        }
-
-
+             clientinfo = Client.actualResult;
 
     }
 
     void prepareSocket(){
 
-        Socket s1 = new Socket("client1.txt","Server1.txt","Tom");
-
-        Socket s2 = new Socket("client2.txt","Server2.txt","Marry");
-
-        Socket s3 = new Socket("client3.txt","Server3.txt","Jack");
-
         List<Socket> socketList = new ArrayList<>();
 
-        socketList.add(s1);
+        for (int i = 0 ; i < clientinfo.size() ; i++){
 
-        socketList.add(s2);
+            Server next = LoadBalancer.getInstance().getNext();
 
-        socketList.add(s3);
+            Socket socket = new Socket( clientinfo.get(i), next );
+
+            socketList.add(socket);
+
+        }
 
         transmitTool.setSockets(socketList);
+
     }
 
     @Test
-    void generateNewFile() {
+    void testTransmission() {
 
         prepareFileEnvironment();
 
         prepareSocket();
 
-        assertEquals(0, new File("Server1.txt").length());
+        assertEquals(0, new File(server1.getIp()).length());
 
-        assertEquals(0, new File("Server2.txt").length());
-
-        assertEquals(0, new File("Server3.txt").length());
+        assertEquals(0, new File(server2.getIp()).length());
 
         assertEquals(false, transmitTool.getSockets().isEmpty());
 
@@ -95,12 +71,10 @@ class TransmitToolTest {
 
         assertEquals(true, transmitTool.getSockets().isEmpty());
 
-        assertEquals(true, new File("Server1.txt").length() > 0);
+        assertEquals(true, new File(server1.getIp()).length() > 0);
 
-        assertEquals(true, new File("Server2.txt").length() > 0);
+        assertEquals(true, new File(server2.getIp()).length() > 0);
 
-        assertEquals(true, new File("Server3.txt").length() > 0);
-        
     }
 
 }

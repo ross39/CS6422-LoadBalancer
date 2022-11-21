@@ -9,9 +9,8 @@ import java.util.stream.Collectors;
 
 public class Client {
 
-    private static String request;
-
     public static List<String> actualResult;
+    public static final String PATH = "main/java/resource/multipleclientrequests.txt";
 
     public static void readFile(String filepath) {
 
@@ -53,9 +52,7 @@ public class Client {
 
     public static void main(String[] args) {
 
-        String path = "main/java/resource/multipleclientrequests.txt";
-
-        readFile(path);
+        readFile(PATH);
 
     }
 }
