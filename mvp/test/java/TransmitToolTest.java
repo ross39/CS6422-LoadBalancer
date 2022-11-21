@@ -51,7 +51,7 @@ class TransmitToolTest {
 
         // create server file
 
-        server1 = new Server(1);
+        server1 = new Server(3);
 
         server2 = new Server(3);
 
@@ -102,6 +102,5 @@ class TransmitToolTest {
         }
 
     }
-
 
 }

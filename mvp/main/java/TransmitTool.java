@@ -19,9 +19,9 @@ public class TransmitTool {
 
     public void sendToServer() {
 
-        int i = sockets.size() - 1;
 
-        while (sockets.size()!=0) {
+
+        for ( int i = 0; i < sockets.size() ; i++) {
 
             String clientip = sockets.get(i).getClientip();
 
@@ -61,13 +61,9 @@ public class TransmitTool {
                 System.out.println("Server shut down or not exist");
             }
 
-            sockets.remove(i);
-
-            i--;
-
         }
 
-
+        sockets.clear();
 
     }
 
