@@ -61,7 +61,7 @@ class TransmitToolTest {
 
         String filePath = IpGenerator.getInstance().getFilePath();
 
-        int i = 0;
+        int i = 1;
 
         File file = new File(filePath + "server" + i + ".txt");
 

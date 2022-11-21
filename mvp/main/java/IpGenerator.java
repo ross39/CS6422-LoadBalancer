@@ -20,16 +20,21 @@ public class IpGenerator {
 
 
     public String getFilePath() {
+
         return filePath;
+
     }
 
     public void setFilePath(String filePath) {
+
         this.filePath = filePath;
+
     }
 
     private static IpGenerator ipGenerator = new IpGenerator();
 
     private IpGenerator() {
+
     }
 
     public static IpGenerator getInstance() {
