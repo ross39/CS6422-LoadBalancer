@@ -11,6 +11,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TransmitToolTest {
 
+    //Change it by yourself if incompatible
+    public static final String CLIENTINFO_TXT = "main/java/resource/clientinfo.txt";
+
     TransmitTool transmitTool = new TransmitTool();
 
     Server server1;
@@ -29,7 +32,7 @@ class TransmitToolTest {
 
         LoadBalancer.getInstance().setServer_list(ServerPool.getServerPool().getPool());
 
-        Client.readFile("main/java/resource/clientinfo.txt");
+        Client.readFile(CLIENTINFO_TXT);
 
         clientinfo = Client.actualResult;
 
@@ -50,6 +53,28 @@ class TransmitToolTest {
         }
 
         transmitTool.setSockets(socketList);
+
+    }
+
+    @Test
+    void cleanServerFile() {
+
+        String filePath = IpGenerator.getInstance().getFilePath();
+
+        int i = 0;
+
+        File file = new File(filePath + "server" + i + ".txt");
+
+        while (file.exists()) {
+
+            file.delete();
+
+            i++;
+
+            file = new File(filePath + "server" + i + ".txt");
+
+
+        }
 
     }
 
