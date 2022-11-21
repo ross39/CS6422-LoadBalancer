@@ -22,6 +22,31 @@ class TransmitToolTest {
 
     List<String> clientinfo = new ArrayList<>();
 
+    @Test
+    void testTransmission() {
+
+        cleanServerFile();
+
+        prepareFileEnvironment();
+
+        prepareSocket();
+
+        assertEquals(true, (new File(server1.getIp()).length()) == 0);
+
+        assertEquals(true, (new File(server2.getIp()).length()) == 0);
+
+        assertEquals(false, transmitTool.getSockets().isEmpty());
+
+        transmitTool.sendToServer();
+
+        assertEquals(true, transmitTool.getSockets().isEmpty());
+
+        assertEquals(true, new File(server1.getIp()).length() > 0);
+
+        assertEquals(true, new File(server2.getIp()).length() > 0);
+
+    }
+
     void prepareFileEnvironment() {
 
         // create server file
@@ -78,27 +103,5 @@ class TransmitToolTest {
 
     }
 
-    @Test
-    void testTransmission() {
-
-        prepareFileEnvironment();
-
-        prepareSocket();
-
-        assertEquals(true, (new File(server1.getIp()).length()) == 0);
-
-        assertEquals(true, (new File(server2.getIp()).length()) == 0);
-
-        assertEquals(false, transmitTool.getSockets().isEmpty());
-
-        transmitTool.sendToServer();
-
-        assertEquals(true, transmitTool.getSockets().isEmpty());
-
-        assertEquals(true, new File(server1.getIp()).length() > 0);
-
-        assertEquals(true, new File(server2.getIp()).length() > 0);
-
-    }
 
 }
