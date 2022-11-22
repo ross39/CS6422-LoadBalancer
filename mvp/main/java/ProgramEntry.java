@@ -6,12 +6,14 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
+import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProgramEntry {
 
-    public static final String CLIENTINFO_TXT = "main/java/resource/clientinfo.txt";
+    public static String CLIENTINFO_TXT = "main/java/resource/clientinfo.txt";
 
     static TransmitTool transmitTool = new TransmitTool();
 
@@ -21,8 +23,7 @@ public class ProgramEntry {
 
     static List<String> clientinfo = new ArrayList<>();
 
-
-    static void cleanServerFile() {
+    static void cleanServerFile() throws URISyntaxException {
 
         String filePath = IpGenerator.getInstance().getFilePath();
 
@@ -43,7 +44,27 @@ public class ProgramEntry {
 
     }
 
-    public static void main(String[] args) throws IOException {
+    // used only when export jar
+    private static void generatejar() throws URISyntaxException {
+
+        CodeSource codeSource = ProgramEntry.class.getProtectionDomain().getCodeSource();
+
+        File jarFile = new File(codeSource.getLocation().toURI().getPath());
+
+        String jarDir = jarFile.getParentFile().getPath();
+
+        System.out.println(jarDir);
+
+        String serverpath = jarDir + "/resource/server/";
+
+        IpGenerator.getInstance().setFilePath(serverpath);
+
+        String clientpath = jarDir + "/resource/"+ CLIENTINFO_TXT;
+
+        CLIENTINFO_TXT = clientpath;
+    }
+
+    public static void main(String[] args) throws IOException, URISyntaxException {
 
         cleanServerFile();
 
