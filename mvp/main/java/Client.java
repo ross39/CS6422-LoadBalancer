@@ -10,11 +10,13 @@ import java.util.stream.Collectors;
 public class Client {
 
     public static List<String> actualResult;
-    public static final String PATH = "main/java/resource/multipleclientrequests.txt";
+
+    private static String PATH = "multipleclientrequests.txt";
 
     public static void readFile(String filepath) {
 
         try {
+            checkFileExist();
 
             InputStream file = new FileInputStream(new File(filepath));
 
@@ -26,20 +28,6 @@ public class Client {
             /* Closes input */
             input.close();
 
-//            alternative
-//            InputStream file2 = new FileInputStream(new File(filepath));
-//
-//            BufferedReader input2 = new BufferedReader(new InputStreamReader(file2));
-//
-//           /* While loop to read each line of the file. request - each line is a different client request */
-//           while ((request = input2.readLine()) != null) {
-
-//            System.out.println("Client request: " + request);
-
-//           }
-//
-//           input2.close();
-
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -48,6 +36,60 @@ public class Client {
 
     public void sendClientRequest(){
         /* Sends the client request to the load balancer */
+    }
+
+    public static void checkFileExist() throws IOException {
+
+        File file = new File(Client.getPATH());
+
+        if (!file.exists()){
+
+            file.createNewFile();
+
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+
+            String data = "Tom\n" +
+                    "Sam\n" +
+                    "Tim\n" +
+                    "May";
+
+            fileOutputStream.write(data.getBytes());
+
+            fileOutputStream.close();
+
+        }else{
+
+            file.delete();
+
+            file.createNewFile();
+
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+
+            String data = "Tom\n" +
+                    "Sam\n" +
+                    "Tim\n" +
+                    "May";
+
+            fileOutputStream.write(data.getBytes());
+
+            fileOutputStream.close();
+
+        }
+    }
+
+    public static String getPATH() {
+        return PATH;
+    }
+
+    public static void setPATH(String PATH) {
+        Client.PATH = PATH;
+    }
+
+    public static void clearFile() {
+
+        File file = new File(Client.getPATH());
+
+        file.delete();
     }
 
     public static void main(String[] args) {

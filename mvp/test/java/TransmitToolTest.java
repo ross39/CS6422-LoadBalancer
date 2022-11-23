@@ -4,6 +4,8 @@ import main.java.*;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class TransmitToolTest {
 
     //Change it by yourself if incompatible
-    public static final String CLIENTINFO_TXT = "main/java/resource/clientinfo.txt";
+    public static String CLIENTINFO_TXT = "clientinfo.txt";
 
     TransmitTool transmitTool = new TransmitTool();
 
@@ -23,9 +25,9 @@ class TransmitToolTest {
     List<String> clientinfo = new ArrayList<>();
 
     @Test
-    void testTransmission() {
+    void testTransmission() throws IOException {
 
-        cleanServerFile();
+        cleanFile();
 
         prepareFileEnvironment();
 
@@ -45,9 +47,11 @@ class TransmitToolTest {
 
         assertEquals(true, new File(server2.getIp()).length() > 0);
 
+        cleanFile();
+
     }
 
-    void prepareFileEnvironment() {
+    void prepareFileEnvironment() throws IOException {
 
         // create server file
 
@@ -57,7 +61,11 @@ class TransmitToolTest {
 
         LoadBalancer.getInstance().setServer_list(ServerPool.getServerPool().getPool());
 
+        checkFileExist();
+
         Client.readFile(CLIENTINFO_TXT);
+
+        Client.clearFile();
 
         clientinfo = Client.actualResult;
 
@@ -82,7 +90,7 @@ class TransmitToolTest {
     }
 
     @Test
-    void cleanServerFile() {
+    void cleanFile() {
 
         String filePath = IpGenerator.getInstance().getFilePath();
 
@@ -101,6 +109,37 @@ class TransmitToolTest {
 
         }
 
+        File file1 = new File(CLIENTINFO_TXT);
+
+        file1.delete();
+
+    }
+
+    public static void checkFileExist() throws IOException {
+
+        File file = new File(CLIENTINFO_TXT);
+
+        if (!file.exists()){
+
+            file.createNewFile();
+
+        }else{
+
+            file.delete();
+
+        }
+
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+
+        String data = "client1 tom\n" +
+                "client2 marry\n" +
+                "client3 jack\n" +
+                "client4 lily\n" +
+                "client5 leo";
+
+        fileOutputStream.write(data.getBytes());
+
+        fileOutputStream.close();
     }
 
 }

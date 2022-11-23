@@ -2,10 +2,8 @@ package test.java;
 
 import main.java.*;
 import org.junit.jupiter.api.Test;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class IntegrationTest {
 
-    public static final String CLIENTINFO_TXT = "main/java/resource/clientinfo.txt";
+    public static String CLIENTINFO_TXT = "clientinfo.txt";
 
     static TransmitTool transmitTool = new TransmitTool();
 
@@ -25,9 +23,11 @@ public class IntegrationTest {
 
 
     @Test
-    void integrationTest(){
+    void integrationTest() throws IOException {
 
         cleanServerFile();
+
+        checkFileExist();
 
         // servers start listening
         server1 = new Server(1);
@@ -38,8 +38,7 @@ public class IntegrationTest {
         LoadBalancer.getInstance().setServer_list(ServerPool.getServerPool().getPool());
 
         // clients start sending requests
-
-        Client.readFile(CLIENTINFO_TXT);
+        ClientReadFile();
 
         clientinfo = Client.actualResult;
 
@@ -68,6 +67,8 @@ public class IntegrationTest {
 
         assertEquals(true, new File(server2.getIp()).length() > 0);
 
+        cleanFile();
+
     }
 
     @Test
@@ -95,6 +96,8 @@ public class IntegrationTest {
     public static void main(String[] args) throws IOException {
 
         cleanServerFile();
+
+        checkFileExist();
 
         prologue();
 
@@ -264,4 +267,64 @@ public class IntegrationTest {
 
         serverlisten.start();
     }
+
+    public static void checkFileExist() throws IOException {
+
+        File file = new File(CLIENTINFO_TXT);
+
+        if (!file.exists()){
+
+            file.createNewFile();
+
+        }else{
+
+            file.delete();
+
+        }
+
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+
+        String data = "client1 tom\n" +
+                "client2 marry\n" +
+                "client3 jack\n" +
+                "client4 lily\n" +
+                "client5 leo";
+
+        fileOutputStream.write(data.getBytes());
+
+        fileOutputStream.close();
+    }
+
+    void cleanFile() {
+
+        String filePath = IpGenerator.getInstance().getFilePath();
+
+        int i = 1;
+
+        File file = new File(filePath + "server" + i + ".txt");
+
+        while (file.exists()) {
+
+            file.delete();
+
+            i++;
+
+            file = new File(filePath + "server" + i + ".txt");
+
+
+        }
+
+        File file1 = new File(CLIENTINFO_TXT);
+
+        file1.delete();
+
+    }
+
+    private void ClientReadFile() {
+
+        Client.readFile(CLIENTINFO_TXT);
+
+        Client.clearFile();
+    }
+
 }
