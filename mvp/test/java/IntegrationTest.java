@@ -205,6 +205,8 @@ public class IntegrationTest {
 
                 Client.readFile(CLIENTINFO_TXT);
 
+                Client.clearFile();
+
                 clientinfo = Client.actualResult;
 
                 List<Socket> socketList = new ArrayList<>();
