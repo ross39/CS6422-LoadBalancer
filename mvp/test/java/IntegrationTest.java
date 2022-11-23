@@ -326,7 +326,6 @@ public class IntegrationTest {
 
         Client.readFile(CLIENTINFO_TXT);
 
-        Client.clearFile();
     }
 
 }

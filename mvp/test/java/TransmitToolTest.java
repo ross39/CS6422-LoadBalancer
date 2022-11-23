@@ -65,8 +65,6 @@ class TransmitToolTest {
 
         Client.readFile(CLIENTINFO_TXT);
 
-        Client.clearFile();
-
         clientinfo = Client.actualResult;
 
     }

@@ -16,7 +16,6 @@ public class Client {
     public static void readFile(String filepath) {
 
         try {
-            checkFileExist();
 
             InputStream file = new FileInputStream(new File(filepath));
 
@@ -92,9 +91,13 @@ public class Client {
         file.delete();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+
+        checkFileExist();
 
         readFile(PATH);
+
+        clearFile();
 
     }
 }
