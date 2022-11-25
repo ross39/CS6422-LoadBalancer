@@ -18,6 +18,10 @@ public class Server implements Comparable {
     //the amount of request that the server can process =  weight * factor;
     private int factor = 2;
 
+    private boolean server_switch = true;
+
+    private boolean server_off = false;
+
 
     /**
      * initialize the ip adrress and default weight once start.
@@ -194,9 +198,7 @@ public class Server implements Comparable {
             @Override
             public void run() {
 
-                TransmitTool transmitTool = new TransmitTool();
-
-                while (true){
+                while (server_switch){
 
                     if (requests.isEmpty()) {
 
@@ -243,10 +245,15 @@ public class Server implements Comparable {
 
 
                 }
+
+                System.out.println("\n----Server Thread: Server "+server.ip+" is closed");
+
+                server_off = true;
             }
         });
 
         thread.start();
+
 
 
 
@@ -301,12 +308,15 @@ public class Server implements Comparable {
 
     }
 
-    /**
-     * test a server
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-        Server server = new Server();
+    public boolean isServer_switch() {
+        return server_switch;
+    }
+
+    public void setServer_switch(boolean server_switch) {
+        this.server_switch = server_switch;
+    }
+
+    public boolean isServer_off() {
+        return server_off;
     }
 }

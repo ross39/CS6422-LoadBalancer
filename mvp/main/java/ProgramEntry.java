@@ -38,7 +38,6 @@ public class ProgramEntry {
         fileOutputStream.close();
     }
 
-
     static void cleanFile() {
 
         String filePath = IpGenerator.getInstance().getFilePath();
@@ -116,8 +115,6 @@ public class ProgramEntry {
 
                 case "3":
 
-                    System.out.println("bye!");
-
                     flag = false;
 
                     break;
@@ -136,6 +133,11 @@ public class ProgramEntry {
 
                 choice = reader.readLine();
 
+            }else{
+
+                ServerPool.getServerPool().closePool();
+
+                System.out.println("\nbye!");
             }
 
 
@@ -255,7 +257,6 @@ public class ProgramEntry {
         assign_thread.start();
 
     }
-
 
     private static void AssignBasedOnWeight(List<Socket> socketList) {
 

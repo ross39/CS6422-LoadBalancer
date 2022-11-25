@@ -9,6 +9,8 @@ public class ServerPool {
 
     private static ServerPool serverPool = new ServerPool();
 
+    private boolean pool_switch = true;
+
     //Create a arraylist of server pools
     private ArrayList<Server> pool = new ArrayList<>();
 
@@ -34,5 +36,25 @@ public class ServerPool {
 
     public ArrayList<Server> getPool() {
         return pool;
+    }
+
+    public void closePool(){
+
+        for (Server server : pool){
+
+            server.setServer_switch(false);
+
+            while (!server.isServer_off()){
+
+            }
+
+        }
+
+        pool_switch = false;
+
+    }
+
+    public boolean isPool_switch() {
+        return pool_switch;
     }
 }
