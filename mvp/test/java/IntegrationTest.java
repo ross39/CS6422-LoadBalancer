@@ -18,6 +18,8 @@ public class IntegrationTest {
     @BeforeEach
     void checkFileExist() throws IOException {
 
+        cleanFile();
+
         File file = new File(CLIENTINFO_TXT);
 
         if (!file.exists()){
@@ -27,6 +29,8 @@ public class IntegrationTest {
         }else{
 
             file.delete();
+
+            file.createNewFile();
 
         }
 

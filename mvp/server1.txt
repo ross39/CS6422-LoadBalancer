@@ -1,6 +1,0 @@
-client1 tom
-client2 marry
-client3 jack
-client4 lily
-client5 leo
-client4 lily

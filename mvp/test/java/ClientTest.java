@@ -27,6 +27,8 @@ public class ClientTest {
 
             file.delete();
 
+            file.createNewFile();
+
         }
 
         FileOutputStream fileOutputStream = new FileOutputStream(file);
