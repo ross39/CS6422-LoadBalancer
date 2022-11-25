@@ -48,5 +48,15 @@ public class IpGeneratorTest {
 
         //ensure server has created the file with given path
         assertEquals(true, exists);
+
+        FileClear(server1);
+
+    }
+
+    private void FileClear(Server server1) {
+
+        File file1 = new File(server1.getIp());
+
+        file1.delete();
     }
 }
