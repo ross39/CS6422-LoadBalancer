@@ -52,19 +52,19 @@ public class ClientTest {
     }
 
     // Test for multiple lines in a file
-    @Test
-    public void testClient() throws IOException {
+     @Test
+     public void testClient() throws IOException {
+         
+         List<String> expectedResult = Arrays.asList("client1 tom", "client2 marry", "client3 jack");
 
-        List<String> expectedResult = Arrays.asList("client1 tom", "client2 marry", "client3 jack");
+         Client.readFile(CLIENTINFO_TXT);
 
-        Client.readFile(CLIENTINFO_TXT);
+         System.out.println(Client.actualResult);
+         
+         assertEquals(expectedResult, Client.actualResult);
 
-        System.out.println(Client.actualResult);
+     }
+ 
 
-        assertEquals(expectedResult, Client.actualResult);
-
-    }
-
-
-}
+ }
  

@@ -25,9 +25,6 @@ public class ServerTest{
 
         Server server = new Server(3, "ip1");
 
-        // once start listening, server would create an empty file according to ip address
-        server.startListen();
-
         File file = new File("ip1");
 
         boolean exists = file.exists();
