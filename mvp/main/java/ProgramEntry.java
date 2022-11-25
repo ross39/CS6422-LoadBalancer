@@ -11,6 +11,68 @@ public class ProgramEntry {
 
     static List<String> clientinfo = new ArrayList<>();
 
+    public static void main(String[] args) throws IOException, URISyntaxException {
+
+        cleanFile();
+
+        checkFileExist();
+
+        prologue();
+
+        BufferedReader reader = new BufferedReader( new InputStreamReader(System.in));
+
+        String choice = reader.readLine();
+
+        boolean flag = true;
+
+        while (flag){
+
+            switch (choice){
+
+                case "1":
+
+                    addServerPrologue();
+
+                    break;
+
+                case "2":
+
+                    addClientPrologue();
+
+                    break;
+
+                case "3":
+
+                    flag = false;
+
+                    break;
+
+                default:
+
+                    System.out.println("sorry, please enter again!");
+
+            }
+
+            if (flag){
+
+                prologue();
+
+                reader = new BufferedReader( new InputStreamReader(System.in));
+
+                choice = reader.readLine();
+
+            }else{
+
+                ServerPool.getServerPool().closePool();
+
+                System.out.println("\nbye!");
+            }
+
+
+        }
+
+    }
+
     static void checkFileExist() throws IOException {
 
         File file = new File(CLIENTINFO_TXT);
@@ -81,68 +143,6 @@ public class ProgramEntry {
         String clientpath = jarDir + "/resource/"+ CLIENTINFO_TXT;
 
         CLIENTINFO_TXT = clientpath;
-    }
-
-    public static void main(String[] args) throws IOException, URISyntaxException {
-
-        cleanFile();
-
-        checkFileExist();
-
-        prologue();
-
-        BufferedReader reader = new BufferedReader( new InputStreamReader(System.in));
-
-        String choice = reader.readLine();
-
-        boolean flag = true;
-
-        while (flag){
-
-            switch (choice){
-
-                case "1":
-
-                    addServerPrologue();
-
-                    break;
-
-                case "2":
-
-                    addClientPrologue();
-
-                    break;
-
-                case "3":
-
-                    flag = false;
-
-                    break;
-
-                default:
-
-                    System.out.println("sorry, please enter again!");
-
-            }
-
-            if (flag){
-
-                prologue();
-
-                reader = new BufferedReader( new InputStreamReader(System.in));
-
-                choice = reader.readLine();
-
-            }else{
-
-                ServerPool.getServerPool().closePool();
-
-                System.out.println("\nbye!");
-            }
-
-
-        }
-
     }
 
     private static void addClientPrologue() {
