@@ -8,6 +8,8 @@ import main.java.ServerPool;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -19,11 +21,13 @@ import java.util.ArrayList;
  */
 public class ServerTest{
 
+    Server server;
+
     //Test that it starts listening
     @Test
      void testStartListen(){
 
-        Server server = new Server(3, "ip1");
+
 
         File file = new File("ip1");
 
@@ -36,8 +40,7 @@ public class ServerTest{
     @Test
      void testGetIpAddress(){
 
-        //Test that it returns the correct ip address using constructor method.
-        Server server = new Server(3, "ip1");
+
 
         assertEquals("ip1", server.getIp());
 
@@ -46,8 +49,6 @@ public class ServerTest{
     @Test
      void testRegister(){
 
-        //check that server has been added to serverpool
-        Server server = new Server(3, "ip1");
 
         //get the server from serverpool
         ServerPool serverPool = ServerPool.getServerPool();
@@ -58,6 +59,24 @@ public class ServerTest{
         boolean contains = pool.contains(server);
 
         assertEquals(true, contains);
+
+    }
+
+    @BeforeEach
+    void CreateFile(){
+
+        //check that server has been added to serverpool
+        server = new Server(3, "ip1");
+
+
+    }
+
+    @AfterEach
+    void ClearFile(){
+
+        File file = new File(server.getIp());
+
+        file.delete();
 
     }
 

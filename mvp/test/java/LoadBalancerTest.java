@@ -3,12 +3,14 @@ package test.java;
  * Authors Cheuk Wei Lin, Meiqi Huang,Ross Heaney, Ruyun Sun, Yiqiu Wang
  */
 
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
 import main.java.Algorithm;
 import main.java.LoadBalancer;
 import main.java.Server;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,6 +48,20 @@ public class LoadBalancerTest{
             assertEquals( loadBalancer.getNext(), testListExpected.get(i));
 
         }
+
+    }
+
+    @AfterEach
+    void CleanFile(){
+
+        for (int i = 1 ; i < 5 ; i++){
+
+            File file = new File("ip"+i);
+
+            file.delete();
+
+        }
+
 
     }
 
