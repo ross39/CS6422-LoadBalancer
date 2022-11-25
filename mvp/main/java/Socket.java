@@ -32,9 +32,13 @@ public class Socket {
     }
 
     public Socket(String clientip, String serverip, String message) {
+
         this.clientip = clientip;
+
         this.serverip = serverip;
+
         this.message = message;
+
     }
     public Socket(String clientinfo, Server server) {
 

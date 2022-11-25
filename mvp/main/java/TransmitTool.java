@@ -19,9 +19,8 @@ public class TransmitTool {
 
     public void sendToServer() {
 
-
-
         for ( int i = 0; i < sockets.size() ; i++) {
+
 
             String clientip = sockets.get(i).getClientip();
 
@@ -32,6 +31,8 @@ public class TransmitTool {
             String clientinfo = sockets.get(i).getClientinfo();
 
             File file = new File(serverip);
+
+            System.out.println("----Server Thread: Server "+serverip+" processing the request "+clientinfo+"!");
 
             try {
 
@@ -52,6 +53,7 @@ public class TransmitTool {
 
                 }
 
+                System.out.println("\n----Server Thread: Server "+serverip+" complete processing "+clientinfo+"\n");
 
                 fileOutputStream.close();
 

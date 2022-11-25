@@ -1,11 +1,5 @@
 package main.java;
-
-import org.junit.jupiter.api.Test;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.security.CodeSource;
 import java.util.ArrayList;
@@ -13,17 +7,39 @@ import java.util.List;
 
 public class ProgramEntry {
 
-    public static String CLIENTINFO_TXT = "main/java/resource/clientinfo.txt";
-
-    static TransmitTool transmitTool = new TransmitTool();
-
-    static Server server1;
-
-    static Server server2;
+    public static String CLIENTINFO_TXT = "clientinfo.txt";
 
     static List<String> clientinfo = new ArrayList<>();
 
-    static void cleanServerFile() throws URISyntaxException {
+    static void checkFileExist() throws IOException {
+
+        File file = new File(CLIENTINFO_TXT);
+
+        if (!file.exists()){
+
+            file.createNewFile();
+
+        }else{
+
+            file.delete();
+
+        }
+
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+
+        String data = "client1 tom\n" +
+                "client2 marry\n" +
+                "client3 jack\n" +
+                "client4 lily\n" +
+                "client5 leo";
+
+        fileOutputStream.write(data.getBytes());
+
+        fileOutputStream.close();
+    }
+
+
+    static void cleanFile() {
 
         String filePath = IpGenerator.getInstance().getFilePath();
 
@@ -41,6 +57,10 @@ public class ProgramEntry {
 
 
         }
+
+        File file1 = new File(CLIENTINFO_TXT);
+
+        file1.delete();
 
     }
 
@@ -66,7 +86,9 @@ public class ProgramEntry {
 
     public static void main(String[] args) throws IOException, URISyntaxException {
 
-        cleanServerFile();
+        cleanFile();
+
+        checkFileExist();
 
         prologue();
 
@@ -119,7 +141,6 @@ public class ProgramEntry {
 
         }
 
-
     }
 
     private static void addClientPrologue() {
@@ -140,13 +161,21 @@ public class ProgramEntry {
 
         BufferedReader reader = new BufferedReader( new InputStreamReader(System.in));
 
-        String weight = reader.readLine();
+        try {
 
-        int i = Integer.parseInt(weight);
+            String weight = reader.readLine();
 
-        addNewServer(i);
+            int i = Integer.parseInt(weight);
 
-        System.out.println("--a server is listening!");
+            addNewServer(i);
+
+            System.out.println("--a server is listening!");
+
+        }catch (Exception e){
+
+            System.out.println("--Wrong input for server! Fail to create a server!");
+        }
+
 
     }
 
@@ -178,44 +207,103 @@ public class ProgramEntry {
 
                 List<Socket> socketList = new ArrayList<>();
 
-                while (LoadBalancer.getInstance().getServer_list().isEmpty()) {
+                CheckServerPool();
 
-                    try {
-                        System.out.println( "----Client Thread: No server started! Please add a Server!");
-
-                        Thread.sleep(10000);
-
-                    } catch (InterruptedException e) {
-
-                        e.printStackTrace();
-
-                    }
-
-                }
-
-                // loadbalancer choose a server for a request
-                for (int i = 0; i < clientinfo.size(); i++) {
-
-                    Server next = LoadBalancer.getInstance().getNext();
-
-                    Socket socket = new Socket(clientinfo.get(i), next);
-
-                    socketList.add(socket);
-
-                }
-
-                // transmit tool get the socketlists
-                transmitTool.setSockets(socketList);
-
-                // transmit tool sent messages to servers according to sockets
-                transmitTool.sendToServer();
-
-                System.out.println( "----Client Thread: Complete sending!\n");
+                // loadbalancer choose a server for a request based on weight
+                AssignRequestToThread(socketList);
 
             }
         });
 
         clientsend.start();
+    }
+
+    private static void CheckServerPool() {
+
+        while (LoadBalancer.getInstance().getServer_list().isEmpty()) {
+
+            try {
+
+                System.out.println( "----Client Thread: No server started! Please add a Server!");
+
+                Thread.sleep(10000);
+
+            } catch (InterruptedException e) {
+
+                e.printStackTrace();
+
+            }
+
+        }
+    }
+
+    private static void AssignRequestToThread(List<Socket> socketList) {
+
+        Thread assign_thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    AssignBasedOnWeightRoundRobin(socketList);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+        assign_thread.start();
+
+    }
+
+
+    private static void AssignBasedOnWeight(List<Socket> socketList) {
+
+    }
+
+    private static void AssignBasedOnWeightRoundRobin(List<Socket> socketList) throws InterruptedException {
+
+        boolean overload = false;
+
+        int warningcount = 0;
+
+        for (int i = 0; i < clientinfo.size(); i++) {
+
+            Server next = LoadBalancer.getInstance().getNext();
+
+            Boolean push = next.push(clientinfo.get(i));
+
+            if (!push){
+
+                if (overload){
+
+                    Thread.sleep(1000);
+
+                    warningcount = 0;
+
+                    overload = false;
+
+                }
+
+                warningcount++;
+
+                if (warningcount>10){
+
+                    System.out.println("----LoadBalancer: This Server "+next.getIp()+" is overloading!");
+
+                    overload = true;
+
+                }
+
+
+                i--;
+
+            }else{
+                System.out.println("----LoadBalancer: Assigned to Server!");
+            }
+
+
+        }
     }
 
     private static void addNewServer(int weight) {

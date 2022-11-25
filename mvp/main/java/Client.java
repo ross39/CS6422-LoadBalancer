@@ -11,11 +11,12 @@ public class Client {
 
     public static List<String> actualResult;
 
-    private static String PATH = "multipleclientrequests.txt";
+    private static String PATH;
 
     public static void readFile(String filepath) {
 
         try {
+            PATH = filepath;
 
             InputStream file = new FileInputStream(new File(filepath));
 
@@ -37,67 +38,11 @@ public class Client {
         /* Sends the client request to the load balancer */
     }
 
-    public static void checkFileExist() throws IOException {
-
-        File file = new File(Client.getPATH());
-
-        if (!file.exists()){
-
-            file.createNewFile();
-
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
-
-            String data = "Tom\n" +
-                    "Sam\n" +
-                    "Tim\n" +
-                    "May";
-
-            fileOutputStream.write(data.getBytes());
-
-            fileOutputStream.close();
-
-        }else{
-
-            file.delete();
-
-            file.createNewFile();
-
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
-
-            String data = "Tom\n" +
-                    "Sam\n" +
-                    "Tim\n" +
-                    "May";
-
-            fileOutputStream.write(data.getBytes());
-
-            fileOutputStream.close();
-
-        }
-    }
-
-    public static String getPATH() {
-        return PATH;
-    }
-
-    public static void setPATH(String PATH) {
-        Client.PATH = PATH;
-    }
-
     public static void clearFile() {
 
-        File file = new File(Client.getPATH());
+        File file = new File(PATH);
 
         file.delete();
     }
 
-    public static void main(String[] args) throws IOException {
-
-        checkFileExist();
-
-        readFile(PATH);
-
-        clearFile();
-
-    }
 }
