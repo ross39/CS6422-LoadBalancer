@@ -9,13 +9,14 @@ import java.util.stream.Collectors;
 
 public class Client {
 
-    private static String request;
-
     public static List<String> actualResult;
+
+    private static String PATH;
 
     public static void readFile(String filepath) {
 
         try {
+            PATH = filepath;
 
             InputStream file = new FileInputStream(new File(filepath));
 
@@ -27,20 +28,6 @@ public class Client {
             /* Closes input */
             input.close();
 
-//            alternative
-//            InputStream file2 = new FileInputStream(new File(filepath));
-//
-//            BufferedReader input2 = new BufferedReader(new InputStreamReader(file2));
-//
-//           /* While loop to read each line of the file. request - each line is a different client request */
-//           while ((request = input2.readLine()) != null) {
-
-//            System.out.println("Client request: " + request);
-
-//           }
-//
-//           input2.close();
-
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -51,11 +38,11 @@ public class Client {
         /* Sends the client request to the load balancer */
     }
 
-    public static void main(String[] args) {
+    public static void clearFile() {
 
-        String path = "main/java/resource/multipleclientrequests.txt";
+        File file = new File(PATH);
 
-        readFile(path);
-
+        file.delete();
     }
+
 }
