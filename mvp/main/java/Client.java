@@ -16,6 +16,7 @@ public class Client {
     public static void readFile(String filepath) {
 
         try {
+
             PATH = filepath;
 
             InputStream file = new FileInputStream(new File(filepath));
