@@ -1,80 +1,70 @@
 package test.java;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import main.java.Client;
 
 public class ClientTest {
 
-     // Test for one line in a file
-     @Test
-     public void testReadFile() throws IOException {
- 
-         String expectedResult = "Tom";
+    public static String CLIENTINFO_TXT = "clientinfo.txt";
 
-         String actualResult;
+    @BeforeEach
+    void checkFileExist() throws IOException {
 
-         // root start from file current folder which is /test/java/
-         // alternative path  /test/java/resource/multipleclientrequests.txt
-         InputStream file = getClass().getResourceAsStream("resource/clientrequest.txt");
+        File file = new File(CLIENTINFO_TXT);
 
-         BufferedReader input = new BufferedReader(new InputStreamReader(file));
+        if (!file.exists()){
 
-         actualResult = input.readLine();
- 
-         assertEquals(expectedResult, actualResult);
- 
-         input.close();
-     }
- 
-     // Test for multiple lines in a file
-     @Test
-     public void testReadFileMultipleLines() throws IOException {    
-         
-         List<String> expectedResult = Arrays.asList("Tom", "Sam", "Tim", "May");
+            file.createNewFile();
 
-         // BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        }else{
 
-         // root start from file current folder which is /test/java/
-         // alternative path  /test/java/resource/multipleclientrequests.txt
-         InputStream file = getClass().getResourceAsStream("resource/multipleclientrequests.txt");
+            file.delete();
 
-         BufferedReader input = new BufferedReader(new InputStreamReader(file));
- 
-         List<String> actualResult = input.lines().collect(Collectors.toList());
- 
-         System.out.println(actualResult);
-         
-         assertEquals(expectedResult, actualResult);
+            file.createNewFile();
 
-         input.close();
- 
-     }
- 
-     @Test
-     void testClient(){
+        }
 
-         List<String> expectedResult = Arrays.asList("Tom", "Sam", "Tim", "May");
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
 
-         //root start from
-         // if your path is incompatible with current environment
-         // right click the file -> copy path
-         // copy <the path from contect root> of the file
-         Client.readFile("resource/multipleclientrequests.txt");
+        String data = "client1 tom\n" +
+                "client2 marry\n" +
+                "client3 jack\n";
 
-         assertEquals(expectedResult, Client.actualResult);
+        fileOutputStream.write(data.getBytes());
 
-     }
- }
+        fileOutputStream.close();
+    }
+
+    @AfterEach
+    void cleanFile() {
+
+        File file1 = new File(CLIENTINFO_TXT);
+
+        file1.delete();
+
+    }
+
+    // Test for multiple lines in a file
+    @Test
+    public void testClient() throws IOException {
+
+        List<String> expectedResult = Arrays.asList("client1 tom", "client2 marry", "client3 jack");
+
+        Client.readFile(CLIENTINFO_TXT);
+
+        System.out.println(Client.actualResult);
+
+        assertEquals(expectedResult, Client.actualResult);
+
+    }
+
+
+}
  
