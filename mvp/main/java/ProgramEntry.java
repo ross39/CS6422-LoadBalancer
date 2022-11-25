@@ -9,8 +9,6 @@ public class ProgramEntry {
 
     public static String CLIENTINFO_TXT = "clientinfo.txt";
 
-    static List<String> clientinfo = new ArrayList<>();
-
     public static void main(String[] args) throws IOException, URISyntaxException {
 
         cleanFile();
@@ -325,4 +323,6 @@ public class ProgramEntry {
 
         serverlisten.start();
     }
+
+    static List<String> clientinfo = new ArrayList<>();
 }
