@@ -3,12 +3,14 @@ package test.java;
  * Authors Cheuk Wei Lin, Meiqi Huang,Ross Heaney, Ruyun Sun, Yiqiu Wang
  */
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import main.java.Algorithm;
@@ -30,16 +32,11 @@ public class AlgorithmTest {
     @Test
     void testSetServerList(){
 
-       /* ArrayList<Server> testListActual = new ArrayList<>();
-        testListActual.add(new Server(1, "ip1"));
-        testListActual.add(new Server(1, "ip2"));
-        */
-
         ArrayList<Server> testListExpected = new ArrayList<>();
 
         testListExpected.add(new Server(1, "ip1"));
 
-        testListExpected.add(new Server(1, "1p2"));
+        testListExpected.add(new Server(1, "ip2"));
 
         algo.setServerList(testListExpected);
 
@@ -128,6 +125,18 @@ public class AlgorithmTest {
     }
 
 
+    @AfterEach
+    void CleanFile(){
 
+        for (int i = 0 ; i < 8 ; i++){
+
+            File file = new File("ip"+i);
+
+            file.delete();
+
+        }
+
+
+    }
 
 }

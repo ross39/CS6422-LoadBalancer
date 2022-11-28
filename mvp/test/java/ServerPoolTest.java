@@ -5,10 +5,12 @@ package test.java;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import main.java.Server;
 import main.java.ServerPool;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 public class ServerPoolTest{
@@ -43,7 +45,19 @@ public class ServerPoolTest{
     }
 
 
+    @AfterEach
+    void CleanFile(){
 
+
+
+            File file = new File("ip3");
+
+            file.delete();
+
+
+
+
+    }
 
 
 

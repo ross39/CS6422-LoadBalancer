@@ -21,8 +21,8 @@ public class LoadBalancer {
         return loadBalancer;
     }
 
-
-    public Server getNext() {
+    // for thread safe
+    public synchronized Server getNext() {
         switch (algorithm_choice) {
             case Algorithm.RandomSelectNext:
                 return algorithm.RandomSelectNext();
@@ -44,6 +44,10 @@ public class LoadBalancer {
     public void setServer_list(ArrayList<Server> server_list) {
         this.server_list = server_list;
         algorithm.setServerList(server_list);
+    }
+
+    public ArrayList<Server> getServer_list() {
+        return server_list;
     }
 
     public int getAlgorithm_choice() {
