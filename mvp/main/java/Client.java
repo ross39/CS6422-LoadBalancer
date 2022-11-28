@@ -9,41 +9,39 @@ import java.util.stream.Collectors;
 
 public class Client {
 
-    public static List<String> actualResult;
+  public static List<String> actualResult;
 
-    private static String PATH;
+  private static String PATH;
 
-    public static void readFile(String filepath) {
+  public static void readFile(String filepath) {
 
-        try {
+    try {
 
-            PATH = filepath;
+      PATH = filepath;
 
-            InputStream file = new FileInputStream(new File(filepath));
+      InputStream file = new FileInputStream(new File(filepath));
 
-            BufferedReader input = new BufferedReader(new InputStreamReader(file));
+      BufferedReader input = new BufferedReader(new InputStreamReader(file));
 
-            // for test
-            actualResult = input.lines().collect(Collectors.toList());
+      // for test
+      actualResult = input.lines().collect(Collectors.toList());
 
-            /* Closes input */
-            input.close();
+      /* Closes input */
+      input.close();
 
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+  }
 
-    public void sendClientRequest(){
-        /* Sends the client request to the load balancer */
-    }
+  public void sendClientRequest() {
+    /* Sends the client request to the load balancer */
+  }
 
-    public static void clearFile() {
+  public static void clearFile() {
 
-        File file = new File(PATH);
+    File file = new File(PATH);
 
-        file.delete();
-    }
-
+    file.delete();
+  }
 }

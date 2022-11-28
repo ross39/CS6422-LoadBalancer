@@ -1,70 +1,62 @@
 package test.java;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.*;
 import java.util.Arrays;
 import java.util.List;
+import main.java.Client;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import main.java.Client;
-
 public class ClientTest {
 
-    public static String CLIENTINFO_TXT = "clientinfo.txt";
+  public static String CLIENTINFO_TXT = "clientinfo.txt";
 
-    @BeforeEach
-    void checkFileExist() throws IOException {
+  @BeforeEach
+  void checkFileExist() throws IOException {
 
-        File file = new File(CLIENTINFO_TXT);
+    File file = new File(CLIENTINFO_TXT);
 
-        if (!file.exists()){
+    if (!file.exists()) {
 
-            file.createNewFile();
+      file.createNewFile();
 
-        }else{
+    } else {
 
-            file.delete();
+      file.delete();
 
-            file.createNewFile();
-
-        }
-
-        FileOutputStream fileOutputStream = new FileOutputStream(file);
-
-        String data = "client1 tom\n" +
-                "client2 marry\n" +
-                "client3 jack\n";
-
-        fileOutputStream.write(data.getBytes());
-
-        fileOutputStream.close();
+      file.createNewFile();
     }
 
-    @AfterEach
-    void cleanFile() {
+    FileOutputStream fileOutputStream = new FileOutputStream(file);
 
-        File file1 = new File(CLIENTINFO_TXT);
+    String data = "client1 tom\n" + "client2 marry\n" + "client3 jack\n";
 
-        file1.delete();
+    fileOutputStream.write(data.getBytes());
 
-    }
+    fileOutputStream.close();
+  }
 
-    // Test for multiple lines in a file
-     @Test
-     public void testClient() throws IOException {
-         
-         List<String> expectedResult = Arrays.asList("client1 tom", "client2 marry", "client3 jack");
+  @AfterEach
+  void cleanFile() {
 
-         Client.readFile(CLIENTINFO_TXT);
+    File file1 = new File(CLIENTINFO_TXT);
 
-         System.out.println(Client.actualResult);
-         
-         assertEquals(expectedResult, Client.actualResult);
+    file1.delete();
+  }
 
-     }
- 
+  // Test for multiple lines in a file
+  @Test
+  public void testClient() throws IOException {
 
- }
- 
+    List<String> expectedResult = Arrays.asList("client1 tom", "client2 marry", "client3 jack");
+
+    Client.readFile(CLIENTINFO_TXT);
+
+    System.out.println(Client.actualResult);
+
+    assertEquals(expectedResult, Client.actualResult);
+  }
+}

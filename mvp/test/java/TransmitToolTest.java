@@ -1,143 +1,130 @@
 package test.java;
 
-import main.java.*;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import main.java.*;
+import org.junit.jupiter.api.Test;
 
 class TransmitToolTest {
 
-    //Change it by yourself if incompatible
-    public static String CLIENTINFO_TXT = "clientinfo.txt";
+  // Change it by yourself if incompatible
+  public static String CLIENTINFO_TXT = "clientinfo.txt";
 
-    TransmitTool transmitTool = new TransmitTool();
+  TransmitTool transmitTool = new TransmitTool();
 
-    Server server1;
+  Server server1;
 
-    Server server2;
+  Server server2;
 
-    List<String> clientinfo = new ArrayList<>();
+  List<String> clientinfo = new ArrayList<>();
 
-    @Test
-    void testTransmission() throws IOException {
+  @Test
+  void testTransmission() throws IOException {
 
-        cleanFile();
+    cleanFile();
 
-        prepareFileEnvironment();
+    prepareFileEnvironment();
 
-        prepareSocket();
+    prepareSocket();
 
-        assertEquals(true, (new File(server1.getIp()).length()) == 0);
+    assertEquals(true, (new File(server1.getIp()).length()) == 0);
 
-        assertEquals(true, (new File(server2.getIp()).length()) == 0);
+    assertEquals(true, (new File(server2.getIp()).length()) == 0);
 
-        assertEquals(false, transmitTool.getSockets().isEmpty());
+    assertEquals(false, transmitTool.getSockets().isEmpty());
 
-        transmitTool.sendToServer();
+    transmitTool.sendToServer();
 
-        assertEquals(true, transmitTool.getSockets().isEmpty());
+    assertEquals(true, transmitTool.getSockets().isEmpty());
 
-        assertEquals(true, new File(server1.getIp()).length() > 0);
+    assertEquals(true, new File(server1.getIp()).length() > 0);
 
-        assertEquals(true, new File(server2.getIp()).length() > 0);
+    assertEquals(true, new File(server2.getIp()).length() > 0);
 
-        cleanFile();
+    cleanFile();
+  }
 
+  void prepareFileEnvironment() throws IOException {
+
+    // create server file
+
+    server1 = new Server(3);
+
+    server2 = new Server(3);
+
+    LoadBalancer.getInstance().setServer_list(ServerPool.getServerPool().getPool());
+
+    checkFileExist();
+
+    Client.readFile(CLIENTINFO_TXT);
+
+    clientinfo = Client.actualResult;
+  }
+
+  void prepareSocket() {
+
+    List<Socket> socketList = new ArrayList<>();
+
+    for (int i = 0; i < clientinfo.size(); i++) {
+
+      Server next = LoadBalancer.getInstance().getNext();
+
+      Socket socket = new Socket(clientinfo.get(i), next);
+
+      socketList.add(socket);
     }
 
-    void prepareFileEnvironment() throws IOException {
+    transmitTool.setSockets(socketList);
+  }
 
-        // create server file
+  @Test
+  void cleanFile() {
 
-        server1 = new Server(3);
+    String filePath = IpGenerator.getInstance().getFilePath();
 
-        server2 = new Server(3);
+    int i = 1;
 
-        LoadBalancer.getInstance().setServer_list(ServerPool.getServerPool().getPool());
+    File file = new File(filePath + "server" + i + ".txt");
 
-        checkFileExist();
+    while (file.exists()) {
 
-        Client.readFile(CLIENTINFO_TXT);
+      file.delete();
 
-        clientinfo = Client.actualResult;
+      i++;
 
+      file = new File(filePath + "server" + i + ".txt");
     }
 
-    void prepareSocket() {
+    File file1 = new File(CLIENTINFO_TXT);
 
-        List<Socket> socketList = new ArrayList<>();
+    file1.delete();
+  }
 
-        for (int i = 0; i < clientinfo.size(); i++) {
+  public static void checkFileExist() throws IOException {
 
-            Server next = LoadBalancer.getInstance().getNext();
+    File file = new File(CLIENTINFO_TXT);
 
-            Socket socket = new Socket(clientinfo.get(i), next);
+    if (!file.exists()) {
 
-            socketList.add(socket);
+      file.createNewFile();
 
-        }
+    } else {
 
-        transmitTool.setSockets(socketList);
-
+      file.delete();
     }
 
-    @Test
-    void cleanFile() {
+    FileOutputStream fileOutputStream = new FileOutputStream(file);
 
-        String filePath = IpGenerator.getInstance().getFilePath();
+    String data =
+        "client1 tom\n" + "client2 marry\n" + "client3 jack\n" + "client4 lily\n" + "client5 leo";
 
-        int i = 1;
+    fileOutputStream.write(data.getBytes());
 
-        File file = new File(filePath + "server" + i + ".txt");
-
-        while (file.exists()) {
-
-            file.delete();
-
-            i++;
-
-            file = new File(filePath + "server" + i + ".txt");
-
-
-        }
-
-        File file1 = new File(CLIENTINFO_TXT);
-
-        file1.delete();
-
-    }
-
-    public static void checkFileExist() throws IOException {
-
-        File file = new File(CLIENTINFO_TXT);
-
-        if (!file.exists()){
-
-            file.createNewFile();
-
-        }else{
-
-            file.delete();
-
-        }
-
-        FileOutputStream fileOutputStream = new FileOutputStream(file);
-
-        String data = "client1 tom\n" +
-                "client2 marry\n" +
-                "client3 jack\n" +
-                "client4 lily\n" +
-                "client5 leo";
-
-        fileOutputStream.write(data.getBytes());
-
-        fileOutputStream.close();
-    }
-
+    fileOutputStream.close();
+  }
 }

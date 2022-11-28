@@ -4,36 +4,33 @@ package main.java;
  */
 
 public class ServerDetails implements Comparable {
-    int weight;
-    //This will be a file corresponding to an ipaddress in the final build
-    String address;
+  int weight;
+  // This will be a file corresponding to an ipaddress in the final build
+  String address;
 
-    public ServerDetails(int weight, String address) {
-        this.weight = weight;
-        this.address = address;
-    }
+  public ServerDetails(int weight, String address) {
+    this.weight = weight;
+    this.address = address;
+  }
 
-    public int getWeight() {
-        return this.weight;
-    }
+  public int getWeight() {
+    return this.weight;
+  }
 
-    public String getAddress() {
-        return this.address;
-    }
+  public String getAddress() {
+    return this.address;
+  }
 
-    @Override
-    public int compareTo(Object o) {
+  @Override
+  public int compareTo(Object o) {
 
-        if (o == null)
-            throw new NullPointerException("cannot compare the null object");
+    if (o == null) throw new NullPointerException("cannot compare the null object");
 
-        ServerDetails serverDetails = (ServerDetails) o;
+    ServerDetails serverDetails = (ServerDetails) o;
 
-        if (serverDetails.getWeight() > this.weight)
-            return -1;
-        else if (serverDetails.getWeight() < this.weight)
-            return 1;
+    if (serverDetails.getWeight() > this.weight) return -1;
+    else if (serverDetails.getWeight() < this.weight) return 1;
 
-        return 0;
-    }
+    return 0;
+  }
 }

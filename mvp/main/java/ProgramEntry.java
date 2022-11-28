@@ -1,4 +1,5 @@
 package main.java;
+
 import java.io.*;
 import java.net.URISyntaxException;
 import java.security.CodeSource;
@@ -7,197 +8,177 @@ import java.util.List;
 
 public class ProgramEntry {
 
-    public static String CLIENTINFO_TXT = "clientinfo.txt";
+  public static String CLIENTINFO_TXT = "clientinfo.txt";
 
-    public static void main(String[] args) throws IOException, URISyntaxException {
+  public static void main(String[] args) throws IOException, URISyntaxException {
 
-        cleanFile();
+    cleanFile();
 
-        checkFileExist();
+    checkFileExist();
+
+    prologue();
+
+    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+    String choice = reader.readLine();
+
+    boolean flag = true;
+
+    while (flag) {
+
+      switch (choice) {
+        case "1":
+          addServerPrologue();
+
+          break;
+
+        case "2":
+          addClientPrologue();
+
+          break;
+
+        case "3":
+          flag = false;
+
+          break;
+
+        default:
+          System.out.println("sorry, please enter again!");
+      }
+
+      if (flag) {
 
         prologue();
 
-        BufferedReader reader = new BufferedReader( new InputStreamReader(System.in));
+        reader = new BufferedReader(new InputStreamReader(System.in));
 
-        String choice = reader.readLine();
+        choice = reader.readLine();
 
-        boolean flag = true;
+      } else {
 
-        while (flag){
+        ServerPool.getServerPool().closePool();
 
-            switch (choice){
+        System.out.println("\nbye!");
+      }
+    }
+  }
 
-                case "1":
+  static void checkFileExist() throws IOException {
 
-                    addServerPrologue();
+    File file = new File(CLIENTINFO_TXT);
 
-                    break;
+    if (!file.exists()) {
 
-                case "2":
+      file.createNewFile();
 
-                    addClientPrologue();
+    } else {
 
-                    break;
-
-                case "3":
-
-                    flag = false;
-
-                    break;
-
-                default:
-
-                    System.out.println("sorry, please enter again!");
-
-            }
-
-            if (flag){
-
-                prologue();
-
-                reader = new BufferedReader( new InputStreamReader(System.in));
-
-                choice = reader.readLine();
-
-            }else{
-
-                ServerPool.getServerPool().closePool();
-
-                System.out.println("\nbye!");
-            }
-
-
-        }
-
+      file.delete();
     }
 
-    static void checkFileExist() throws IOException {
+    FileOutputStream fileOutputStream = new FileOutputStream(file);
 
-        File file = new File(CLIENTINFO_TXT);
+    String data =
+        "client1 tom\n" + "client2 marry\n" + "client3 jack\n" + "client4 lily\n" + "client5 leo";
 
-        if (!file.exists()){
+    fileOutputStream.write(data.getBytes());
 
-            file.createNewFile();
+    fileOutputStream.close();
+  }
 
-        }else{
+  static void cleanFile() {
 
-            file.delete();
+    String filePath = IpGenerator.getInstance().getFilePath();
 
-        }
+    int i = 1;
 
-        FileOutputStream fileOutputStream = new FileOutputStream(file);
+    File file = new File(filePath + "server" + i + ".txt");
 
-        String data = "client1 tom\n" +
-                "client2 marry\n" +
-                "client3 jack\n" +
-                "client4 lily\n" +
-                "client5 leo";
+    while (file.exists()) {
 
-        fileOutputStream.write(data.getBytes());
+      file.delete();
 
-        fileOutputStream.close();
+      i++;
+
+      file = new File(filePath + "server" + i + ".txt");
     }
 
-    static void cleanFile() {
+    File file1 = new File(CLIENTINFO_TXT);
 
-        String filePath = IpGenerator.getInstance().getFilePath();
+    file1.delete();
+  }
 
-        int i = 1;
+  // used only when export jar
+  private static void generatejar() throws URISyntaxException {
 
-        File file = new File(filePath + "server" + i + ".txt");
+    CodeSource codeSource = ProgramEntry.class.getProtectionDomain().getCodeSource();
 
-        while (file.exists()) {
+    File jarFile = new File(codeSource.getLocation().toURI().getPath());
 
-            file.delete();
+    String jarDir = jarFile.getParentFile().getPath();
 
-            i++;
+    System.out.println(jarDir);
 
-            file = new File(filePath + "server" + i + ".txt");
+    String serverpath = jarDir + "/resource/server/";
 
+    IpGenerator.getInstance().setFilePath(serverpath);
 
-        }
+    String clientpath = jarDir + "/resource/" + CLIENTINFO_TXT;
 
-        File file1 = new File(CLIENTINFO_TXT);
+    CLIENTINFO_TXT = clientpath;
+  }
 
-        file1.delete();
+  private static void addClientPrologue() {
 
+    System.out.println("--start creating a client!");
+
+    clientlisten();
+
+    System.out.println("--the client has started!\n");
+  }
+
+  private static void addServerPrologue() throws IOException {
+
+    System.out.println("--please assign a weight for server!");
+
+    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+    try {
+
+      String weight = reader.readLine();
+
+      int i = Integer.parseInt(weight);
+
+      addNewServer(i);
+
+      System.out.println("--a server is listening!");
+
+    } catch (Exception e) {
+
+      System.out.println("--Wrong input for server! Fail to create a server!");
     }
+  }
 
-    // used only when export jar
-    private static void generatejar() throws URISyntaxException {
+  private static void prologue() {
 
-        CodeSource codeSource = ProgramEntry.class.getProtectionDomain().getCodeSource();
+    System.out.println("\nhello, this is a loadbalancer program, which action do you want to do?");
 
-        File jarFile = new File(codeSource.getLocation().toURI().getPath());
+    System.out.println("A: add a new server and start to listen! press 1 to start!");
 
-        String jarDir = jarFile.getParentFile().getPath();
+    System.out.println("B: add a new client and start sending requests! press 2 to start!");
 
-        System.out.println(jarDir);
+    System.out.println("C: quit the program! press 3 to quit!\n");
+  }
 
-        String serverpath = jarDir + "/resource/server/";
+  private static void clientlisten() {
 
-        IpGenerator.getInstance().setFilePath(serverpath);
+    // clientsend thread1
+    Thread clientsend =
+        new Thread(
+            new Runnable() {
 
-        String clientpath = jarDir + "/resource/"+ CLIENTINFO_TXT;
-
-        CLIENTINFO_TXT = clientpath;
-    }
-
-    private static void addClientPrologue() {
-
-        System.out.println("--start creating a client!");
-
-        clientlisten();
-
-        System.out.println("--the client has started!\n");
-
-
-
-    }
-
-    private static void addServerPrologue() throws IOException {
-
-        System.out.println("--please assign a weight for server!");
-
-        BufferedReader reader = new BufferedReader( new InputStreamReader(System.in));
-
-        try {
-
-            String weight = reader.readLine();
-
-            int i = Integer.parseInt(weight);
-
-            addNewServer(i);
-
-            System.out.println("--a server is listening!");
-
-        }catch (Exception e){
-
-            System.out.println("--Wrong input for server! Fail to create a server!");
-        }
-
-
-    }
-
-    private static void prologue() {
-
-        System.out.println("\nhello, this is a loadbalancer program, which action do you want to do?");
-
-        System.out.println("A: add a new server and start to listen! press 1 to start!");
-
-        System.out.println("B: add a new client and start sending requests! press 2 to start!");
-
-        System.out.println("C: quit the program! press 3 to quit!\n");
-
-    }
-
-    private static void clientlisten() {
-
-        //clientsend thread1
-        Thread clientsend = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
+              @Override
+              public void run() {
 
                 // clients start sending requests
 
@@ -211,118 +192,110 @@ public class ProgramEntry {
 
                 // loadbalancer choose a server for a request based on weight
                 AssignRequestToThread(socketList);
+              }
+            });
 
-            }
-        });
+    clientsend.start();
+  }
 
-        clientsend.start();
+  private static void CheckServerPool() {
+
+    while (LoadBalancer.getInstance().getServer_list().isEmpty()) {
+
+      try {
+
+        System.out.println("----Client Thread: No server started! Please add a Server!");
+
+        Thread.sleep(10000);
+
+      } catch (InterruptedException e) {
+
+        e.printStackTrace();
+      }
     }
+  }
 
-    private static void CheckServerPool() {
+  private static void AssignRequestToThread(List<Socket> socketList) {
 
-        while (LoadBalancer.getInstance().getServer_list().isEmpty()) {
-
-            try {
-
-                System.out.println( "----Client Thread: No server started! Please add a Server!");
-
-                Thread.sleep(10000);
-
-            } catch (InterruptedException e) {
-
-                e.printStackTrace();
-
-            }
-
-        }
-    }
-
-    private static void AssignRequestToThread(List<Socket> socketList) {
-
-        Thread assign_thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
+    Thread assign_thread =
+        new Thread(
+            new Runnable() {
+              @Override
+              public void run() {
 
                 try {
-                    AssignBasedOnWeightRoundRobin(socketList);
+                  AssignBasedOnWeightRoundRobin(socketList);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                  e.printStackTrace();
                 }
+              }
+            });
 
-            }
-        });
+    assign_thread.start();
+  }
 
-        assign_thread.start();
+  private static void AssignBasedOnWeight(List<Socket> socketList) {}
 
-    }
+  private static void AssignBasedOnWeightRoundRobin(List<Socket> socketList)
+      throws InterruptedException {
 
-    private static void AssignBasedOnWeight(List<Socket> socketList) {
+    boolean overload = false;
 
-    }
+    int warningcount = 0;
 
-    private static void AssignBasedOnWeightRoundRobin(List<Socket> socketList) throws InterruptedException {
+    for (int i = 0; i < clientinfo.size(); i++) {
 
-        boolean overload = false;
+      Server next = LoadBalancer.getInstance().getNext();
 
-        int warningcount = 0;
+      Boolean push = next.push(clientinfo.get(i));
 
-        for (int i = 0; i < clientinfo.size(); i++) {
+      if (!push) {
 
-            Server next = LoadBalancer.getInstance().getNext();
+        if (overload) {
 
-            Boolean push = next.push(clientinfo.get(i));
+          Thread.sleep(1000);
 
-            if (!push){
+          warningcount = 0;
 
-                if (overload){
-
-                    Thread.sleep(1000);
-
-                    warningcount = 0;
-
-                    overload = false;
-
-                }
-
-                warningcount++;
-
-                if (warningcount>10){
-
-                    System.out.println("----LoadBalancer: This Server "+next.getIp()+" is overloading!");
-
-                    overload = true;
-
-                }
-
-
-                i--;
-
-            }else{
-                System.out.println("----LoadBalancer: Assigned to Server!");
-            }
-
-
+          overload = false;
         }
+
+        warningcount++;
+
+        if (warningcount > 10) {
+
+          System.out.println("----LoadBalancer: This Server " + next.getIp() + " is overloading!");
+
+          overload = true;
+        }
+
+        i--;
+
+      } else {
+        System.out.println("----LoadBalancer: Assigned to Server!");
+      }
     }
+  }
 
-    private static void addNewServer(int weight) {
+  private static void addNewServer(int weight) {
 
-        Thread serverlisten = new Thread(new Runnable() {
+    Thread serverlisten =
+        new Thread(
+            new Runnable() {
 
-            @Override
-            public void run() {
+              @Override
+              public void run() {
 
                 // servers start listening
-                Server  server = new Server(weight);
+                Server server = new Server(weight);
 
                 // loadbalancer get the server list from serverpool
                 LoadBalancer.getInstance().setServer_list(ServerPool.getServerPool().getPool());
+              }
+            });
 
-            }
-        });
+    serverlisten.start();
+  }
 
-        serverlisten.start();
-    }
-
-    static List<String> clientinfo = new ArrayList<>();
+  static List<String> clientinfo = new ArrayList<>();
 }

@@ -1,127 +1,116 @@
 package test.java;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import main.java.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class IntegrationTest {
 
-    public static String CLIENTINFO_TXT = "clientinfo.txt";
+  public static String CLIENTINFO_TXT = "clientinfo.txt";
 
-    @BeforeEach
-    void checkFileExist() throws IOException {
+  @BeforeEach
+  void checkFileExist() throws IOException {
 
-        cleanFile();
+    cleanFile();
 
-        File file = new File(CLIENTINFO_TXT);
+    File file = new File(CLIENTINFO_TXT);
 
-        if (!file.exists()){
+    if (!file.exists()) {
 
-            file.createNewFile();
+      file.createNewFile();
 
-        }else{
+    } else {
 
-            file.delete();
+      file.delete();
 
-            file.createNewFile();
-
-        }
-
-        FileOutputStream fileOutputStream = new FileOutputStream(file);
-
-        String data = "client1 tom\n" +
-                "client2 marry\n" +
-                "client3 jack\n" +
-                "client4 lily\n" +
-                "client5 leo";
-
-        fileOutputStream.write(data.getBytes());
-
-        fileOutputStream.close();
+      file.createNewFile();
     }
 
-    @AfterEach
-    void cleanFile() {
+    FileOutputStream fileOutputStream = new FileOutputStream(file);
 
-        String filePath = IpGenerator.getInstance().getFilePath();
+    String data =
+        "client1 tom\n" + "client2 marry\n" + "client3 jack\n" + "client4 lily\n" + "client5 leo";
 
-        int i = 1;
+    fileOutputStream.write(data.getBytes());
 
-        File file = new File(filePath + "server" + i + ".txt");
+    fileOutputStream.close();
+  }
 
-        while (file.exists()) {
+  @AfterEach
+  void cleanFile() {
 
-            file.delete();
+    String filePath = IpGenerator.getInstance().getFilePath();
 
-            i++;
+    int i = 1;
 
-            file = new File(filePath + "server" + i + ".txt");
+    File file = new File(filePath + "server" + i + ".txt");
 
+    while (file.exists()) {
 
-        }
+      file.delete();
 
-        File file1 = new File(CLIENTINFO_TXT);
+      i++;
 
-        file1.delete();
-
+      file = new File(filePath + "server" + i + ".txt");
     }
 
-    static TransmitTool transmitTool = new TransmitTool();
+    File file1 = new File(CLIENTINFO_TXT);
 
-    static Server server1;
+    file1.delete();
+  }
 
-    static Server server2;
+  static TransmitTool transmitTool = new TransmitTool();
 
-    static List<String> clientinfo = new ArrayList<>();
+  static Server server1;
 
-    @Test
-    void integrationTest() throws IOException {
+  static Server server2;
 
-        // servers start listening
-        server1 = new Server(1);
+  static List<String> clientinfo = new ArrayList<>();
 
-        server2 = new Server(3);
+  @Test
+  void integrationTest() throws IOException {
 
-        // loadbalancer get the server list from serverpool
-        LoadBalancer.getInstance().setServer_list(ServerPool.getServerPool().getPool());
+    // servers start listening
+    server1 = new Server(1);
 
-        // clients start sending requests
-        Client.readFile(CLIENTINFO_TXT);
+    server2 = new Server(3);
 
-        clientinfo = Client.actualResult;
+    // loadbalancer get the server list from serverpool
+    LoadBalancer.getInstance().setServer_list(ServerPool.getServerPool().getPool());
 
-        List<Socket> socketList = new ArrayList<>();
+    // clients start sending requests
+    Client.readFile(CLIENTINFO_TXT);
 
-        // loadbalancer choose a server for a request
-        for (int i = 0; i < clientinfo.size(); i++) {
+    clientinfo = Client.actualResult;
 
-            Server next = LoadBalancer.getInstance().getNext();
+    List<Socket> socketList = new ArrayList<>();
 
-            Socket socket = new Socket(clientinfo.get(i), next);
+    // loadbalancer choose a server for a request
+    for (int i = 0; i < clientinfo.size(); i++) {
 
-            socketList.add(socket);
+      Server next = LoadBalancer.getInstance().getNext();
 
-        }
+      Socket socket = new Socket(clientinfo.get(i), next);
 
-        // transmit tool get the socketlists
-        transmitTool.setSockets(socketList);
-
-        // transmit tool sent messages to servers according to sockets
-        transmitTool.sendToServer();
-
-        assertEquals(true, transmitTool.getSockets().isEmpty());
-
-        assertEquals(true, new File(server1.getIp()).length() > 0);
-
-        assertEquals(true, new File(server2.getIp()).length() > 0);
-
+      socketList.add(socket);
     }
 
+    // transmit tool get the socketlists
+    transmitTool.setSockets(socketList);
+
+    // transmit tool sent messages to servers according to sockets
+    transmitTool.sendToServer();
+
+    assertEquals(true, transmitTool.getSockets().isEmpty());
+
+    assertEquals(true, new File(server1.getIp()).length() > 0);
+
+    assertEquals(true, new File(server2.getIp()).length() > 0);
+  }
 }
