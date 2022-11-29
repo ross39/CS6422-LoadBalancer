@@ -11,6 +11,7 @@ public class ProgramEntry {
 
   public static String CLIENTINFO_TXT = "clientinfo.txt";
   static ArrayList<String> data = new ArrayList<>();
+  static List<String> clientinfo = new ArrayList<>();
 
   public static void main(String[] args) throws IOException, URISyntaxException {
 
@@ -88,7 +89,7 @@ public class ProgramEntry {
     ObjectOutputStream writeStream = new ObjectOutputStream(fileOutputStream);
 
     // Generate random client indentifiers are write to the file
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < 20; i++) {
       data.add(generateClientIdentifiier(6));
     }
 
@@ -168,7 +169,7 @@ public class ProgramEntry {
 
     } catch (Exception e) {
 
-      System.out.println("--Wrong input for server! Fail to create a server!");
+      System.out.println("--Wrong input for server! Failed to create a server!");
     }
   }
 
@@ -238,7 +239,7 @@ public class ProgramEntry {
 
                 try {
                   AssignBasedOnWeightRoundRobin(socketList);
-                } catch (InterruptedException e) {
+                } catch (InterruptedException | IOException e) {
                   e.printStackTrace();
                 }
               }
@@ -249,19 +250,12 @@ public class ProgramEntry {
 
   /*
    * Method to spin up new servers if client clist exceeds some arbitrary value
-   *
    */
-  private static void spinUpNewServer() throws IOException {
-    // Check if the number of clients in the client list
-    if (data.size() > 15) {
-      System.out.println("UH OH!! We need to spin up a new server to handle the load!");
-      System.out.println("Number of clients has exceeded 15");
-      addServerPrologue();
-    }
-  }
 
+  // TODO: refactor this method to include spinUpNewServer()
+  // FIXME: why are we passing in a socketlist if we are not using it?
   private static void AssignBasedOnWeightRoundRobin(List<Socket> socketList)
-      throws InterruptedException {
+      throws InterruptedException, IOException {
 
     boolean overload = false;
 
@@ -273,30 +267,12 @@ public class ProgramEntry {
 
       Boolean push = next.push(clientinfo.get(i));
 
-      if (!push) {
+      System.out.println("----LoadBalancer: Assigned to Server!");
 
-        if (overload) {
-
-          Thread.sleep(1000);
-
-          warningcount = 0;
-
-          overload = false;
-        }
-
-        warningcount++;
-
-        if (warningcount > 10) {
-
-          System.out.println("----LoadBalancer: This Server " + next.getIp() + " is overloading!");
-
-          overload = true;
-        }
-
-        i--;
-
-      } else {
-        System.out.println("----LoadBalancer: Assigned to Server!");
+      if (data.size() > 15) {
+        System.out.println("UH OH!! We need to spin up a new server to handle the load!");
+        System.out.println("Number of clients has exceeded 15");
+        addServerPrologue();
       }
     }
   }
@@ -320,6 +296,4 @@ public class ProgramEntry {
 
     serverlisten.start();
   }
-
-  static List<String> clientinfo = new ArrayList<>();
 }
