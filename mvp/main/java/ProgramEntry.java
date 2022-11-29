@@ -5,10 +5,12 @@ import java.net.URISyntaxException;
 import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class ProgramEntry {
 
   public static String CLIENTINFO_TXT = "clientinfo.txt";
+  static ArrayList<String> data = new ArrayList<>();
 
   public static void main(String[] args) throws IOException, URISyntaxException {
 
@@ -63,6 +65,12 @@ public class ProgramEntry {
     }
   }
 
+  public static String generateClientIdentifiier(int desiredLength) {
+
+    String randomClient = UUID.randomUUID().toString().substring(0, desiredLength);
+    return randomClient;
+  }
+
   static void checkFileExist() throws IOException {
 
     File file = new File(CLIENTINFO_TXT);
@@ -77,13 +85,18 @@ public class ProgramEntry {
     }
 
     FileOutputStream fileOutputStream = new FileOutputStream(file);
+    ObjectOutputStream writeStream = new ObjectOutputStream(fileOutputStream);
 
-    String data =
-        "client1 tom\n" + "client2 marry\n" + "client3 jack\n" + "client4 lily\n" + "client5 leo";
+    // Generate random client indentifiers are write to the file
+    for (int i = 0; i < 15; i++) {
+      data.add(generateClientIdentifiier(6));
+    }
 
-    fileOutputStream.write(data.getBytes());
-
+    /* fileOutputStream.write(data.getBytes()); */
+    writeStream.writeObject(data);
     fileOutputStream.close();
+    writeStream.flush();
+    writeStream.close();
   }
 
   static void cleanFile() {
@@ -234,7 +247,18 @@ public class ProgramEntry {
     assign_thread.start();
   }
 
-  private static void AssignBasedOnWeight(List<Socket> socketList) {}
+  /*
+   * Method to spin up new servers if client clist exceeds some arbitrary value
+   *
+   */
+  private static void spinUpNewServer() throws IOException {
+    // Check if the number of clients in the client list
+    if (data.size() > 15) {
+      System.out.println("UH OH!! We need to spin up a new server to handle the load!");
+      System.out.println("Number of clients has exceeded 15");
+      addServerPrologue();
+    }
+  }
 
   private static void AssignBasedOnWeightRoundRobin(List<Socket> socketList)
       throws InterruptedException {
