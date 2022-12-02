@@ -94,7 +94,7 @@ public class ProgramEntry {
     }
 
     /* fileOutputStream.write(data.getBytes()); */
-    writeStream.writeObject(data);
+    writeStream.writeObject(data.toString());
     fileOutputStream.close();
     writeStream.flush();
     writeStream.close();
@@ -253,7 +253,7 @@ public class ProgramEntry {
    */
 
   // TODO: refactor this method to include spinUpNewServer()
-  // FIXME: why are we passing in a socketlist if we are not using it?
+  // FIXME: why are we passing in a socketlist if we are not 1using it?
   private static void AssignBasedOnWeightRoundRobin(List<Socket> socketList)
       throws InterruptedException, IOException {
 
