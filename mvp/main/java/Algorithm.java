@@ -12,7 +12,6 @@ public class Algorithm {
   private ArrayList<Server> serverList = new ArrayList<>();
 
   private int current_index_roundrobin = 0;
-
   private int current_index_weightdepend = serverList.size() - 1;
 
   private void RenewCurrentIndex() {
@@ -20,7 +19,7 @@ public class Algorithm {
     current_index_weightdepend = serverList.size() - 1;
   }
 
-  /*techically we don't need this as ArrayList is a mutable conatiner class
+  /* Technically we don't need this as ArrayList is a mutable container class
    * We could simply call getServerList and mutate the ArrayList. Leave for now
    * but no harm to look at this for when refactoring for final product
    */
@@ -38,8 +37,10 @@ public class Algorithm {
 
     int list_number = serverList.size();
     Random random = new Random();
+
     int random_index = random.nextInt(list_number);
     Server server = serverList.get(random_index);
+
     return server;
   }
 

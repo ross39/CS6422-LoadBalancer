@@ -28,23 +28,16 @@ public class ProgramEntry {
     boolean flag = true;
 
     while (flag) {
-
       switch (choice) {
         case "1":
           addServerPrologue();
-
           break;
-
         case "2":
           addClientPrologue();
-
           break;
-
         case "3":
           flag = false;
-
           break;
-
         default:
           System.out.println("sorry, please enter again!");
       }
@@ -66,7 +59,7 @@ public class ProgramEntry {
     }
   }
 
-  public static String generateClientIdentifiier(int desiredLength) {
+  public static String generateClientIdentifier(int desiredLength) {
 
     String randomClient = UUID.randomUUID().toString().substring(0, desiredLength);
     return randomClient;
@@ -77,20 +70,17 @@ public class ProgramEntry {
     File file = new File(CLIENTINFO_TXT);
 
     if (!file.exists()) {
-
       file.createNewFile();
-
     } else {
-
       file.delete();
     }
 
     FileOutputStream fileOutputStream = new FileOutputStream(file);
     ObjectOutputStream writeStream = new ObjectOutputStream(fileOutputStream);
 
-    // Generate random client indentifiers are write to the file
+    // Generate random client identifiers are write to the file
     for (int i = 0; i < 20; i++) {
-      data.add(generateClientIdentifiier(6));
+      data.add(generateClientIdentifier(6));
     }
 
     /* fileOutputStream.write(data.getBytes()); */
@@ -195,7 +185,6 @@ public class ProgramEntry {
               public void run() {
 
                 // clients start sending requests
-
                 Client.readFile(CLIENTINFO_TXT);
 
                 clientinfo = Client.actualResult;
@@ -249,13 +238,13 @@ public class ProgramEntry {
   }
 
   /*
-   * Method to spin up new servers if client clist exceeds some arbitrary value
+   * Method to spin up new servers if client list exceeds some arbitrary value
    */
 
   // TODO: refactor this method to include spinUpNewServer()
-  // FIXME: why are we passing in a socketlist if we are not 1using it?
+  // FIXME: why are we passing in a socketlist if we are not using it?
   private static void AssignBasedOnWeightRoundRobin(List<Socket> socketList)
-      throws InterruptedException, IOException {
+          throws InterruptedException, IOException {
 
     boolean overload = false;
 

@@ -21,11 +21,8 @@ public class TransmitTool {
     for (int i = 0; i < sockets.size(); i++) {
 
       String clientip = sockets.get(i).getClientip();
-
       String message = sockets.get(i).getMessage();
-
       String serverip = sockets.get(i).getServerip();
-
       String clientinfo = sockets.get(i).getClientinfo();
 
       File file = new File(serverip);
@@ -38,15 +35,10 @@ public class TransmitTool {
         FileOutputStream fileOutputStream = new FileOutputStream(file, true);
 
         if (clientinfo.isEmpty()) {
-
           String s = clientip + " : " + message + "\n";
-
           fileOutputStream.write(s.getBytes());
-
         } else {
-
           String s = clientinfo + "\n";
-
           fileOutputStream.write(s.getBytes());
         }
 
@@ -60,7 +52,6 @@ public class TransmitTool {
         fileOutputStream.close();
 
       } catch (IOException e) {
-
         System.out.println("Server shut down or not exist");
       }
     }

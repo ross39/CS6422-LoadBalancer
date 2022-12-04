@@ -6,12 +6,12 @@ public class LoadBalancer {
 
   // TODO: add a workrate message
   // TODO: automatically spin up new servers
-  // defalut algorithm choice
+  // default algorithm choice
   private int algorithm_choice = Algorithm.WeightDependentNext;
 
   private Algorithm algorithm = new Algorithm();
 
-  // Create a arraylist of server pools
+  // Create an arraylist of server pools
   private ArrayList<Server> server_list = new ArrayList<>();
 
   private static LoadBalancer loadBalancer = new LoadBalancer();
@@ -25,6 +25,7 @@ public class LoadBalancer {
 
   // for thread safe
   public synchronized Server getNext() {
+
     switch (algorithm_choice) {
       case Algorithm.RandomSelectNext:
         return algorithm.RandomSelectNext();
@@ -33,6 +34,7 @@ public class LoadBalancer {
       case Algorithm.WeightDependentNext:
         return algorithm.WeightDependentNext();
     }
+
     return null;
   }
 
