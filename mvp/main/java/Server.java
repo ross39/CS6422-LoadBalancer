@@ -252,7 +252,7 @@ public class Server implements Comparable {
 
         File file = new File(serverip);
 
-        System.out.println("\n----Server Thread: Server "+serverip+" processing the request "+clientinfo+"!");
+        System.out.println("\n" + ColorText.ANSI_CYAN_BACKGROUND + "----Server Thread: Server "+serverip+" processing the request "+clientinfo+"!" + ColorText.ANSI_RESET);
 
         try {
 
@@ -273,9 +273,9 @@ public class Server implements Comparable {
             }
 
             // delay
-            delay(6000);
+            delay(4000);
 
-            System.out.println("\n----Server Thread: Server "+serverip+" complete processing "+clientinfo+"\n");
+            System.out.println("\n" + ColorText.ANSI_GREEN_BACKGROUND + "----Server Thread: Server "+serverip+" complete processing "+clientinfo+"\n" + ColorText.ANSI_RESET);
 
             fileOutputStream.close();
 

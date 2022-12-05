@@ -1,4 +1,5 @@
 package main.java;
+
 import java.io.*;
 import java.net.URISyntaxException;
 import java.security.CodeSource;
@@ -17,15 +18,15 @@ public class ProgramEntry {
 
         prologue();
 
-        BufferedReader reader = new BufferedReader( new InputStreamReader(System.in));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         String choice = reader.readLine();
 
         boolean flag = true;
 
-        while (flag){
+        while (flag) {
 
-            switch (choice){
+            switch (choice) {
 
                 case "1":
 
@@ -47,23 +48,23 @@ public class ProgramEntry {
 
                 default:
 
-                    System.out.println("sorry, please enter again!");
+                    System.out.println(ColorText.ANSI_RED_BACKGROUND + "sorry, please enter again!" + ColorText.ANSI_RESET);
 
             }
 
-            if (flag){
+            if (flag) {
 
                 prologue();
 
-                reader = new BufferedReader( new InputStreamReader(System.in));
+                reader = new BufferedReader(new InputStreamReader(System.in));
 
                 choice = reader.readLine();
 
-            }else{
+            } else {
 
                 ServerPool.getServerPool().closePool();
 
-                System.out.println("\nbye!");
+                System.out.println("\n" + ColorText.ANSI_GREEN_BACKGROUND + "bye!" + ColorText.ANSI_RESET);
             }
 
 
@@ -75,11 +76,11 @@ public class ProgramEntry {
 
         File file = new File(CLIENTINFO_TXT);
 
-        if (!file.exists()){
+        if (!file.exists()) {
 
             file.createNewFile();
 
-        }else{
+        } else {
 
             file.delete();
 
@@ -138,7 +139,7 @@ public class ProgramEntry {
 
         IpGenerator.getInstance().setFilePath(serverpath);
 
-        String clientpath = jarDir + "/resource/"+ CLIENTINFO_TXT;
+        String clientpath = jarDir + "/resource/" + CLIENTINFO_TXT;
 
         CLIENTINFO_TXT = clientpath;
     }
@@ -149,17 +150,16 @@ public class ProgramEntry {
 
         clientlisten();
 
-        System.out.println("--the client has started!\n");
-
+        System.out.println(ColorText.ANSI_GREEN_BACKGROUND + "--the client has started!\n" + ColorText.ANSI_RESET);
 
 
     }
 
     private static void addServerPrologue() throws IOException {
 
-        System.out.println("--please assign a weight for server!");
+        System.out.println(ColorText.ANSI_YELLOW_BACKGROUND + "--please assign a weight for server!" + ColorText.ANSI_RESET);
 
-        BufferedReader reader = new BufferedReader( new InputStreamReader(System.in));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         try {
 
@@ -169,11 +169,11 @@ public class ProgramEntry {
 
             addNewServer(i);
 
-            System.out.println("--a server is listening!"+"\n --this server can accept "+ i * Server.factor + " requests one time!");
+            System.out.println(ColorText.ANSI_GREEN_BACKGROUND + "--a server is listening!" + "\n --this server can accept " + i * Server.factor + " requests one time!" + ColorText.ANSI_RESET);
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
-            System.out.println("--Wrong input for server! Fail to create a server!");
+            System.out.println(ColorText.ANSI_RED_BACKGROUND + "--Wrong input for server! Fail to create a server!" + ColorText.ANSI_RESET);
         }
 
 
@@ -224,7 +224,7 @@ public class ProgramEntry {
 
             try {
 
-                System.out.println( "----Client Thread: No server started! Please add a Server!");
+                System.out.println(ColorText.ANSI_YELLOW_BACKGROUND + "----Client Thread: No server started! Please add a Server!" + ColorText.ANSI_RESET);
 
                 Thread.sleep(10000);
 
@@ -272,9 +272,9 @@ public class ProgramEntry {
 
             Boolean push = next.push(clientinfo.get(i));
 
-            if (!push){
+            if (!push) {
 
-                if (overload){
+                if (overload) {
 
                     Thread.sleep(3000);
 
@@ -286,9 +286,9 @@ public class ProgramEntry {
 
                 warningcount++;
 
-                if (warningcount > 10){
+                if (warningcount > 10) {
 
-                    System.out.println("----LoadBalancer: This Server " + next.getIp() + " is overloading!");
+                    System.out.println(ColorText.ANSI_YELLOW_BACKGROUND + "----LoadBalancer: This Server " + next.getIp() + " is overloading!" + ColorText.ANSI_RESET);
 
                     overload = true;
 
@@ -296,8 +296,8 @@ public class ProgramEntry {
 
                 i--;
 
-            }else{
-                System.out.println("----LoadBalancer: Assigned a request"+ clientinfo.get(i) +" to a Server" + next.getIp() + "!");
+            } else {
+                System.out.println(ColorText.ANSI_GREEN_BACKGROUND + "----LoadBalancer: Assigned a request" + clientinfo.get(i) + " to a Server" + next.getIp() + "!" + ColorText.ANSI_RESET);
             }
 
 
@@ -312,7 +312,7 @@ public class ProgramEntry {
             public void run() {
 
                 // servers start listening
-                Server  server = new Server(weight);
+                Server server = new Server(weight);
 
                 // loadbalancer get the server list from serverpool
                 LoadBalancer.getInstance().setServer_list(ServerPool.getServerPool().getPool());
