@@ -3,3 +3,5 @@
 *.iml
 *.class
 .DS_Store
+mvp/out/production/mvp/test/java/resource/clientinfo
+*.txt

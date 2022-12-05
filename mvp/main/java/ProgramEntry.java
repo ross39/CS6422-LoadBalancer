@@ -169,7 +169,7 @@ public class ProgramEntry {
 
             addNewServer(i);
 
-            System.out.println("--a server is listening!");
+            System.out.println("--a server is listening!"+"\n --this server can accept "+ i * Server.factor + " requests one time!");
 
         }catch (Exception e){
 
@@ -276,7 +276,7 @@ public class ProgramEntry {
 
                 if (overload){
 
-                    Thread.sleep(1000);
+                    Thread.sleep(3000);
 
                     warningcount = 0;
 
@@ -286,19 +286,18 @@ public class ProgramEntry {
 
                 warningcount++;
 
-                if (warningcount>10){
+                if (warningcount > 10){
 
-                    System.out.println("----LoadBalancer: This Server "+next.getIp()+" is overloading!");
+                    System.out.println("----LoadBalancer: This Server " + next.getIp() + " is overloading!");
 
                     overload = true;
 
                 }
 
-
                 i--;
 
             }else{
-                System.out.println("----LoadBalancer: Assigned to Server!");
+                System.out.println("----LoadBalancer: Assigned a request"+ clientinfo.get(i) +" to a Server" + next.getIp() + "!");
             }
 
 

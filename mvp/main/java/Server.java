@@ -16,7 +16,7 @@ public class Server implements Comparable {
     private List<String> requests = new LinkedList<>();
 
     //the amount of request that the server can process =  weight * factor;
-    private int factor = 2;
+    public static int factor = 2;
 
     private boolean server_switch = true;
 
@@ -205,15 +205,7 @@ public class Server implements Comparable {
                         System.out.println("\n----Server Thread: Server "+server.ip+" is waiting for request...");
 
                         // sleep
-                        try {
-
-                            Thread.sleep(3000);
-
-                        } catch (InterruptedException e) {
-
-                            e.printStackTrace();
-
-                        }
+                        delay(3000);
 
 
                     }else{
@@ -226,17 +218,6 @@ public class Server implements Comparable {
                             ProcessRequestOneByOne(socket);
 
                             requests.remove(0);
-
-                            // delay
-                            try {
-
-                                Thread.sleep(1000);
-
-                            } catch (InterruptedException e) {
-
-                                e.printStackTrace();
-
-                            }
 
                         }
 
@@ -283,7 +264,6 @@ public class Server implements Comparable {
 
                 fileOutputStream.write(s.getBytes());
 
-
             }else{
 
                 String s = clientinfo + "\n";
@@ -291,6 +271,9 @@ public class Server implements Comparable {
                 fileOutputStream.write(s.getBytes());
 
             }
+
+            // delay
+            delay(6000);
 
             System.out.println("\n----Server Thread: Server "+serverip+" complete processing "+clientinfo+"\n");
 
@@ -306,6 +289,18 @@ public class Server implements Comparable {
 
 
 
+    }
+
+    private void delay(int i) {
+        try {
+
+            Thread.sleep(i);
+
+        } catch (InterruptedException e) {
+
+            e.printStackTrace();
+
+        }
     }
 
     public boolean isServer_switch() {
