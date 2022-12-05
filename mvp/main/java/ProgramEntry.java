@@ -135,13 +135,13 @@ public class ProgramEntry {
 
         System.out.println(jarDir);
 
-        String serverpath = jarDir + "/resource/server/";
+//        String serverpath = jarDir + "/resource/server/";
 
-        IpGenerator.getInstance().setFilePath(serverpath);
+//        IpGenerator.getInstance().setFilePath(serverpath);
 
-        String clientpath = jarDir + "/resource/" + CLIENTINFO_TXT;
-
-        CLIENTINFO_TXT = clientpath;
+//        String clientpath = jarDir + "/resource/" + CLIENTINFO_TXT;
+//
+//        CLIENTINFO_TXT = clientpath;
     }
 
     private static void addClientPrologue() {
