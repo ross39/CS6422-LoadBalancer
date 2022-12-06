@@ -48,7 +48,7 @@ public class ProgramEntry {
 
                 default:
 
-                    System.out.println(ColorText.ANSI_RED_BACKGROUND + "sorry, please enter again!" + ColorText.ANSI_RESET);
+                    System.out.println("\n" + ColorText.ANSI_RED_BACKGROUND + "sorry, please enter again!" + ColorText.ANSI_RESET + "\n");
 
             }
 
@@ -64,7 +64,7 @@ public class ProgramEntry {
 
                 ServerPool.getServerPool().closePool();
 
-                System.out.println("\n" + ColorText.ANSI_GREEN_BACKGROUND + "bye!" + ColorText.ANSI_RESET);
+                System.out.println("\n" + ColorText.ANSI_GREEN_BACKGROUND + "bye!" + ColorText.ANSI_RESET + "\n");
             }
 
 
@@ -127,13 +127,13 @@ public class ProgramEntry {
     // used only when export jar
     private static void generatejar() throws URISyntaxException {
 
-        CodeSource codeSource = ProgramEntry.class.getProtectionDomain().getCodeSource();
-
-        File jarFile = new File(codeSource.getLocation().toURI().getPath());
-
-        String jarDir = jarFile.getParentFile().getPath();
-
-        System.out.println(jarDir);
+//        CodeSource codeSource = ProgramEntry.class.getProtectionDomain().getCodeSource();
+//
+//        File jarFile = new File(codeSource.getLocation().toURI().getPath());
+//
+//        String jarDir = jarFile.getParentFile().getPath();
+//
+//        System.out.println(jarDir);
 
 //        String serverpath = jarDir + "/resource/server/";
 
@@ -146,18 +146,18 @@ public class ProgramEntry {
 
     private static void addClientPrologue() {
 
-        System.out.println("--start creating a client!");
+        System.out.println("\n" + ColorText.ANSI_CYAN_BACKGROUND + "--start creating a client!" + ColorText.ANSI_RESET +"\n");
 
         clientlisten();
 
-        System.out.println(ColorText.ANSI_GREEN_BACKGROUND + "--the client has started!\n" + ColorText.ANSI_RESET);
+        System.out.println("\n" + ColorText.ANSI_GREEN_BACKGROUND + "--the client has started!" + ColorText.ANSI_RESET + "\n");
 
 
     }
 
     private static void addServerPrologue() throws IOException {
 
-        System.out.println(ColorText.ANSI_YELLOW_BACKGROUND + "--please assign a weight for server!" + ColorText.ANSI_RESET);
+        System.out.println("\n" + ColorText.ANSI_CYAN_BACKGROUND + "--please assign a weight for server!" + ColorText.ANSI_RESET + "\n" );
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -169,11 +169,11 @@ public class ProgramEntry {
 
             addNewServer(i);
 
-            System.out.println(ColorText.ANSI_GREEN_BACKGROUND + "--a server is listening!" + "\n --this server can accept " + i * Server.factor + " requests one time!" + ColorText.ANSI_RESET);
+            System.out.println("\n" + ColorText.ANSI_GREEN_BACKGROUND + "--a server is listening!" + "\n --this server can accept " + i * Server.factor + " requests one time!" + ColorText.ANSI_RESET + "\n");
 
         } catch (Exception e) {
 
-            System.out.println(ColorText.ANSI_RED_BACKGROUND + "--Wrong input for server! Fail to create a server!" + ColorText.ANSI_RESET);
+            System.out.println("\n" + ColorText.ANSI_RED_BACKGROUND + "--Wrong input for server! Fail to create a server!" + ColorText.ANSI_RESET + "\n");
         }
 
 
@@ -224,7 +224,7 @@ public class ProgramEntry {
 
             try {
 
-                System.out.println(ColorText.ANSI_YELLOW_BACKGROUND + "----Client Thread: No server started! Please add a Server!" + ColorText.ANSI_RESET);
+                System.out.println("\n" + ColorText.ANSI_YELLOW_BACKGROUND + "----Client Thread: No server started! Please add a Server!" + ColorText.ANSI_RESET + "\n");
 
                 Thread.sleep(10000);
 
@@ -288,7 +288,7 @@ public class ProgramEntry {
 
                 if (warningcount > 10) {
 
-                    System.out.println(ColorText.ANSI_YELLOW_BACKGROUND + "----LoadBalancer: This Server " + next.getIp() + " is overloading!" + ColorText.ANSI_RESET);
+                    System.out.println("\n" + ColorText.ANSI_YELLOW_BACKGROUND + "----LoadBalancer: This Server " + next.getIp() + " is overloading!" + ColorText.ANSI_RESET + "\n");
 
                     overload = true;
 
@@ -297,7 +297,7 @@ public class ProgramEntry {
                 i--;
 
             } else {
-                System.out.println(ColorText.ANSI_GREEN_BACKGROUND + "----LoadBalancer: Assigned a request" + clientinfo.get(i) + " to a Server" + next.getIp() + "!" + ColorText.ANSI_RESET);
+                System.out.println("\n" + ColorText.ANSI_GREEN_BACKGROUND + "----LoadBalancer: Assigned a request" + clientinfo.get(i) + " to a Server" + next.getIp() + "!" + ColorText.ANSI_RESET + "\n");
             }
 
 
