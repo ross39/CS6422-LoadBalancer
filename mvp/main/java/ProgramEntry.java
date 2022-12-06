@@ -1,4 +1,5 @@
 package main.java;
+
 import java.io.*;
 import java.net.URISyntaxException;
 import java.security.CodeSource;
@@ -17,15 +18,15 @@ public class ProgramEntry {
 
         prologue();
 
-        BufferedReader reader = new BufferedReader( new InputStreamReader(System.in));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         String choice = reader.readLine();
 
         boolean flag = true;
 
-        while (flag){
+        while (flag) {
 
-            switch (choice){
+            switch (choice) {
 
                 case "1":
 
@@ -47,23 +48,23 @@ public class ProgramEntry {
 
                 default:
 
-                    System.out.println("sorry, please enter again!");
+                    System.out.println("\n" + ColorText.ANSI_RED_BACKGROUND + "sorry, please enter again!" + ColorText.ANSI_RESET + "\n");
 
             }
 
-            if (flag){
+            if (flag) {
 
                 prologue();
 
-                reader = new BufferedReader( new InputStreamReader(System.in));
+                reader = new BufferedReader(new InputStreamReader(System.in));
 
                 choice = reader.readLine();
 
-            }else{
+            } else {
 
                 ServerPool.getServerPool().closePool();
 
-                System.out.println("\nbye!");
+                System.out.println("\n" + ColorText.ANSI_GREEN_BACKGROUND + "bye!" + ColorText.ANSI_RESET + "\n");
             }
 
 
@@ -75,11 +76,11 @@ public class ProgramEntry {
 
         File file = new File(CLIENTINFO_TXT);
 
-        if (!file.exists()){
+        if (!file.exists()) {
 
             file.createNewFile();
 
-        }else{
+        } else {
 
             file.delete();
 
@@ -126,40 +127,39 @@ public class ProgramEntry {
     // used only when export jar
     private static void generatejar() throws URISyntaxException {
 
-        CodeSource codeSource = ProgramEntry.class.getProtectionDomain().getCodeSource();
+//        CodeSource codeSource = ProgramEntry.class.getProtectionDomain().getCodeSource();
+//
+//        File jarFile = new File(codeSource.getLocation().toURI().getPath());
+//
+//        String jarDir = jarFile.getParentFile().getPath();
+//
+//        System.out.println(jarDir);
 
-        File jarFile = new File(codeSource.getLocation().toURI().getPath());
+//        String serverpath = jarDir + "/resource/server/";
 
-        String jarDir = jarFile.getParentFile().getPath();
+//        IpGenerator.getInstance().setFilePath(serverpath);
 
-        System.out.println(jarDir);
-
-        String serverpath = jarDir + "/resource/server/";
-
-        IpGenerator.getInstance().setFilePath(serverpath);
-
-        String clientpath = jarDir + "/resource/"+ CLIENTINFO_TXT;
-
-        CLIENTINFO_TXT = clientpath;
+//        String clientpath = jarDir + "/resource/" + CLIENTINFO_TXT;
+//
+//        CLIENTINFO_TXT = clientpath;
     }
 
     private static void addClientPrologue() {
 
-        System.out.println("--start creating a client!");
+        System.out.println("\n" + ColorText.ANSI_CYAN_BACKGROUND + "--start creating a client!" + ColorText.ANSI_RESET +"\n");
 
         clientlisten();
 
-        System.out.println("--the client has started!\n");
-
+        System.out.println("\n" + ColorText.ANSI_GREEN_BACKGROUND + "--the client has started!" + ColorText.ANSI_RESET + "\n");
 
 
     }
 
     private static void addServerPrologue() throws IOException {
 
-        System.out.println("--please assign a weight for server!");
+        System.out.println("\n" + ColorText.ANSI_CYAN_BACKGROUND + "--please assign a weight for server!" + ColorText.ANSI_RESET + "\n" );
 
-        BufferedReader reader = new BufferedReader( new InputStreamReader(System.in));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         try {
 
@@ -169,11 +169,11 @@ public class ProgramEntry {
 
             addNewServer(i);
 
-            System.out.println("--a server is listening!");
+            System.out.println("\n" + ColorText.ANSI_GREEN_BACKGROUND + "--a server is listening!" + "\n --this server can accept " + i * Server.factor + " requests one time!" + ColorText.ANSI_RESET + "\n");
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
-            System.out.println("--Wrong input for server! Fail to create a server!");
+            System.out.println("\n" + ColorText.ANSI_RED_BACKGROUND + "--Wrong input for server! Fail to create a server!" + ColorText.ANSI_RESET + "\n");
         }
 
 
@@ -224,7 +224,7 @@ public class ProgramEntry {
 
             try {
 
-                System.out.println( "----Client Thread: No server started! Please add a Server!");
+                System.out.println("\n" + ColorText.ANSI_YELLOW_BACKGROUND + "----Client Thread: No server started! Please add a Server!" + ColorText.ANSI_RESET + "\n");
 
                 Thread.sleep(10000);
 
@@ -272,11 +272,11 @@ public class ProgramEntry {
 
             Boolean push = next.push(clientinfo.get(i));
 
-            if (!push){
+            if (!push) {
 
-                if (overload){
+                if (overload) {
 
-                    Thread.sleep(1000);
+                    Thread.sleep(3000);
 
                     warningcount = 0;
 
@@ -286,19 +286,18 @@ public class ProgramEntry {
 
                 warningcount++;
 
-                if (warningcount>10){
+                if (warningcount > 10) {
 
-                    System.out.println("----LoadBalancer: This Server "+next.getIp()+" is overloading!");
+                    System.out.println("\n" + ColorText.ANSI_YELLOW_BACKGROUND + "----LoadBalancer: This Server " + next.getIp() + " is overloading!" + ColorText.ANSI_RESET + "\n");
 
                     overload = true;
 
                 }
 
-
                 i--;
 
-            }else{
-                System.out.println("----LoadBalancer: Assigned to Server!");
+            } else {
+                System.out.println("\n" + ColorText.ANSI_GREEN_BACKGROUND + "----LoadBalancer: Assigned a request" + clientinfo.get(i) + " to a Server" + next.getIp() + "!" + ColorText.ANSI_RESET + "\n");
             }
 
 
@@ -313,7 +312,7 @@ public class ProgramEntry {
             public void run() {
 
                 // servers start listening
-                Server  server = new Server(weight);
+                Server server = new Server(weight);
 
                 // loadbalancer get the server list from serverpool
                 LoadBalancer.getInstance().setServer_list(ServerPool.getServerPool().getPool());
